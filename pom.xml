@@ -106,7 +106,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.va1m.komunalko.Main</mainClass>
+                            <mainClass>com.va1m.moskommunalbot.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

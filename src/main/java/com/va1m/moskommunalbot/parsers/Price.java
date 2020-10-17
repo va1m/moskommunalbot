@@ -1,4 +1,4 @@
-package com.va1m.komunalko.parsers;
+package com.va1m.moskommunalbot.parsers;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

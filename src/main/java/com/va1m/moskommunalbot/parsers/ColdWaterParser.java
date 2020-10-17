@@ -1,8 +1,8 @@
-package com.va1m.komunalko.parsers;
+package com.va1m.moskommunalbot.parsers;
 
 import java.time.LocalDate;
 
-/** Perces the page and founds prices and dates since they have been set */
+/** Parses the page and founds prices and dates since they have been set */
 public final class ColdWaterParser {
 
     private ColdWaterParser() {

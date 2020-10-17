@@ -1,5 +1,7 @@
-package com.va1m.komunalko;
+package com.va1m.moskommunalbot;
 
+import com.va1m.moskommunalbot.interaction.InteractionDao;
+import com.va1m.moskommunalbot.interaction.InteractionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.ApiContextInitializer;
@@ -13,6 +15,9 @@ public class Main {
 
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
+    private static final InteractionDao INTERACTION_DAO = new InteractionDao();
+    private static final InteractionService INTERACTION_SERVICE = new InteractionService(INTERACTION_DAO);
+
     /** Main method */
     public static void main(String[] args) {
 
@@ -24,9 +29,10 @@ public class Main {
                 .orElseThrow();
 
         ApiContextInitializer.init();
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+        final var telegramBotsApi = new TelegramBotsApi();
+        final var komunalkoBot = new MosKommunalBot(INTERACTION_SERVICE, token);
         try {
-            telegramBotsApi.registerBot(new KomunalkoBot(token));
+            telegramBotsApi.registerBot(komunalkoBot);
         } catch (TelegramApiException e) {
             LOGGER.error("", e);
         }
