@@ -30,9 +30,9 @@ public class Main {
 
         ApiContextInitializer.init();
         final var telegramBotsApi = new TelegramBotsApi();
-        final var komunalkoBot = new MosKommunalBot(INTERACTION_SERVICE, token);
+        final var mosKommunalBot = new MosKommunalBot(INTERACTION_SERVICE, token);
         try {
-            telegramBotsApi.registerBot(komunalkoBot);
+            telegramBotsApi.registerBot(mosKommunalBot);
         } catch (TelegramApiException e) {
             LOGGER.error("", e);
         }
