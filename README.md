@@ -1,4 +1,4 @@
-# komunalko
+# MosKommunalBot
 
 A telegram bot calculating communal expenses for hot, cold
  water, for water disposing, and for electricity in Moscow.

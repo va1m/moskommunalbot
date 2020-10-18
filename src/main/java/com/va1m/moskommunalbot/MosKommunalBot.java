@@ -48,7 +48,7 @@ public class MosKommunalBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "komunalkobot";
+        return "moskommunalbot";
     }
 
     @Override
