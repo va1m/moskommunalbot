@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.va1m.komunalko</groupId>
-    <artifactId>komunalko</artifactId>
+    <groupId>com.va1m.moskommunalbot</groupId>
+    <artifactId>moskommunalbot</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
