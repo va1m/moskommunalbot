@@ -1,6 +1,6 @@
-package com.va1m.komunalko.services;
+package com.va1m.moskommunalbot.services;
 
-import com.va1m.komunalko.parsers.ColdWaterParser;
+import com.va1m.moskommunalbot.parsers.ColdWaterParser;
 
 import java.time.LocalDate;
 import java.util.stream.Stream;
