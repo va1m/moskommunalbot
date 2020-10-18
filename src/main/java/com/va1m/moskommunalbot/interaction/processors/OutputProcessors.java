@@ -2,7 +2,17 @@ package com.va1m.moskommunalbot.interaction.processors;
 
 import com.va1m.moskommunalbot.interaction.InteractionContext;
 import com.va1m.moskommunalbot.interaction.State;
+import com.va1m.moskommunalbot.priceproviders.PriceEntry;
+import com.va1m.moskommunalbot.priceproviders.ColdWaterPricesProvider;
+import com.va1m.moskommunalbot.priceproviders.ElectricityPricesProvider;
+import com.va1m.moskommunalbot.priceproviders.HotWaterPricesProvider;
+import com.va1m.moskommunalbot.priceproviders.WaterDisposingPricesProvider;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.stream.Stream;
+
+/** Provides methods (processors) to build output text messages for user */
 public final class OutputProcessors {
 
     private OutputProcessors() {
@@ -10,54 +20,96 @@ public final class OutputProcessors {
 
     /** Returns text for the NEXT {@link State#WAITING_FOR_LAST_COLD_WATER_METERS} state */
     public static String lastColdWater(InteractionContext interactionContext) {
-        return "Hello!\n" +
-                "Welcome to the new communal expenses calculation.\n" +
-                "Please, enter cold water meters from the latest calculation";
+        return "Привет!\n" +
+                "Начинаем новый расчет за коммунальные услуги.\n" +
+                "Пожалуйста, введите показание счетчика холодной воды на начало периода.";
     }
 
     /** Returns text for the NEXT {@link State#WAITING_FOR_CURRENT_COLD_WATER_METERS} state */
     public static String currentColdWater(InteractionContext interactionContext) {
-        return "Now, please, enter current cold water meters";
+        return "Теперь, пожалуйста, введите текущее показание счетчика холодной воды.";
     }
 
     /** Returns text for the NEXT {@link State#WAITING_FOR_LAST_HOT_WATER_METERS} state */
     public static String lastHotWater(InteractionContext interactionContext) {
-        return "Enter hot water meters from the latest calculation";
+        return "Введите показание счетчика горячей воды на начало периода.";
     }
 
     /** Returns text for the NEXT {@link State#WAITING_FOR_CURRENT_HOT_WATER_METERS} state */
     public static String currentHotWater(InteractionContext interactionContext) {
-        return "Enter current hot water meters";
+        return "Введите текущее показание счетчика горячей воды.";
     }
 
     /** Returns text for the NEXT {@link State#WAITING_FOR_LAST_ELECTRICITY_METERS} state */
     public static String lastElectricity(InteractionContext interactionContext) {
-        return "Enter the electricity meters from the latest calculation";
+        return "Введите показание счетчика электричества на начало периода.";
     }
 
     /** Returns text for the NEXT {@link State#WAITING_FOR_CURRENT_ELECTRICITY_METERS} state */
     public static String currentElectricity(InteractionContext interactionContext) {
-        return "And now enter current electricity meters";
+        return "Введите текущее показание счетчика электричества.";
     }
 
     /** Returns text for the NEXT {@link State#SHOWING_RESULTS} state */
     public static String results(InteractionContext interactionContext) {
-        return "According to the meters you entered the followings communal expenses are calculated:\n" +
+
+        final var coldWater = new ColdWaterPricesProvider();
+        final var hotWater = new HotWaterPricesProvider();
+        final var waterDisposing = new WaterDisposingPricesProvider();
+        final var electricity = new ElectricityPricesProvider();
+
+        var template = "* Холодная вода:%n" +
+                "%.2fруб. за %dкб.м. (%.2fруб/кб.м. с %s)%n";
+        final var consumedColdWater =
+                interactionContext.getCurrentColdWaterMeters() - interactionContext.getLatestColdWaterMeters();
+        final var coldWaterText = getExpenseEntryText(coldWater.provide(), consumedColdWater, template);
+
+        template = "* Горячая вода:%n" +
+                "%.2fруб. за %dкб.м. (%.2fруб/кб.м. с %s)%n";
+        final var consumedHotWater =
+                interactionContext.getCurrentHotWaterMeters() - interactionContext.getLatestHotWaterMeters();
+        final var hotWaterText = getExpenseEntryText(hotWater.provide(), consumedHotWater, template);
+
+        template = "* Водоотвод (канализация):%n" +
+                "%.2fруб. за %dкб.м. (%.2fруб/кб.м. с %s)%n";
+        final var disposedWater = consumedColdWater + consumedHotWater;
+        final var disposedWaterText = getExpenseEntryText(waterDisposing.provide(), disposedWater, template);
+
+        template = "* Электричество:%n" +
+                "%.2fруб. за %dКВт (%.2fруб/КВт с %s)%n";
+        final var consumedElectricity =
+                interactionContext.getCurrentElectricityMeters() - interactionContext.getLatestElectricityMeters();
+        final var consumedElectricityText =
+                getExpenseEntryText(electricity.provide(), consumedElectricity, template);
+
+        return "Стоимость коммунальных услуг:\n" +
                 "\n" +
-                "Cold water:\n" +
-                "\t{} RUB for {} liters ({} RUB/L since {})\n" +
-                "Hot water:\n" +
-                "\t{} RUB for {} liters ({} RUB/L since {})\n" +
-                "Water disposing:\n" +
-                "\t{} RUB for {} + {} = {} liters ({} RUB/L since {})\n" +
-                "Electricity:\n" +
-                "\t{} RUB for {} KW ({} RUB/KW since {})\n" +
+                coldWaterText +
+                hotWaterText +
+                disposedWaterText +
+                consumedElectricityText +
                 "\n" +
-                "Prices are from the following pages:\n" +
-                "* Mosvodokanal:http://www.mosvodokanal.ru/forabonents/tariffs/\n" +
-                "* MOEK:https://online.moek.ru/clients/tarify-i-raschety/tarify\n" +
-                "* Mosenergosbyt:https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/kvartiry-i-doma-s-elektricheskimi-plitami.php\n" +
+                "Цены взяты из следующих источников:\n" +
+                "* МосВодоКанал: http://www.mosvodokanal.ru/forabonents/tariffs/\n" +
+                "* МОЭК: https://online.moek.ru/clients/tarify-i-raschety/tarify\n" +
+                "* МосЭнергоСбыт: https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/kvartiry-i-doma-s-elektricheskimi-plitami.php\n" +
                 "\n" +
-                "If you want to start a new calculation send me `/new` command.";
+                "Для начала нового расчета наберите `/new`.";
+    }
+
+    private static String getExpenseEntryText(PriceEntry[] priceEntries, int consumed, String template) {
+        final var today = LocalDate.now(ZoneId.of("Europe/Moscow"));
+
+        return Stream.of(priceEntries)
+                .filter(price -> today.compareTo(price.getSince()) >= 0)
+                .filter(price -> today.compareTo(price.getTill()) <= 0)
+                .findFirst()
+                .map(price -> {
+                    final var dblPrice = ((double) price.getPrice()) / 100.0D;
+                    final var totalAmount = ((double) (consumed * price.getPrice())) / 100.0D;
+                    return String.format(template,
+                            totalAmount, consumed, dblPrice, price.getSince().toString());
+                })
+                .orElseThrow();
     }
 }
