@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class InteractionContext {
 
-    private State lastState;
+    private State nextState;
 
     private Integer latestColdWaterMeters;
     private Integer currentColdWaterMeters;

@@ -19,7 +19,7 @@ public class InteractionService {
             State.WAITING_FOR_CURRENT_HOT_WATER_METERS, State.WAITING_FOR_LAST_ELECTRICITY_METERS,
             State.WAITING_FOR_LAST_ELECTRICITY_METERS, State.WAITING_FOR_CURRENT_ELECTRICITY_METERS,
             State.WAITING_FOR_CURRENT_ELECTRICITY_METERS, State.SHOWING_RESULTS,
-            State.SHOWING_RESULTS, State.WAITING_FOR_LAST_COLD_WATER_METERS
+            State.SHOWING_RESULTS, State.START
     );
 
     private final InteractionDao interactionDao;
@@ -35,16 +35,18 @@ public class InteractionService {
         final var interactionContext = interactionDao.read(chatId)
                 .orElseGet(() -> {
                     final var newInteractionContext = new InteractionContext();
-                    newInteractionContext.setLastState(State.START);
+                    newInteractionContext.setNextState(State.START);
                     return newInteractionContext;
                 });
 
         try {
-            final var currentStep = STATE_MACHINE.get(interactionContext.getLastState());
+            final var currentStep = interactionContext.getNextState();
             currentStep.getInputProcessor().accept(input, interactionContext);
-            interactionContext.setLastState(currentStep);
+
+            final var nextStep = STATE_MACHINE.get(interactionContext.getNextState());
+            interactionContext.setNextState(nextStep);
             interactionDao.write(chatId, interactionContext);
-            return currentStep.getOutputProcessor().apply(interactionContext);
+            return nextStep.getOutputProcessor().apply(interactionContext);
         } catch (InvalidInputException iie) {
             return iie.getMessage();
         } catch (Exception e) {
