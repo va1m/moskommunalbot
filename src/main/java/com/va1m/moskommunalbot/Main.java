@@ -17,7 +17,7 @@ public class Main {
 
     /** Main method */
     public static void main(String[] args) {
-
+        LOGGER.info("MosKommunalBot is starting...");
         ApiContextInitializer.init();
         final var telegramBotsApi = new TelegramBotsApi();
         final var mosKommunalBot = new MosKommunalBot(INTERACTION_SERVICE);
@@ -26,5 +26,6 @@ public class Main {
         } catch (Exception e) {
             LOGGER.error("Unexpected error", e);
         }
+        LOGGER.info("MosKommunalBot stopped");
     }
 }
