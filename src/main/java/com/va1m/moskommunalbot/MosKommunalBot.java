@@ -1,11 +1,14 @@
 package com.va1m.moskommunalbot;
 
+import static java.util.Optional.ofNullable;
+
 import com.va1m.moskommunalbot.interaction.InteractionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /** Contains the bot's logic */
@@ -24,22 +27,31 @@ public class MosKommunalBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
 
         // We check if the update has a message and the message has text
-        if (update.hasMessage() && update.getMessage().hasText()) {
+        if (!update.hasMessage() || !update.getMessage().hasText()) {
+            return;
+        }
 
-            final var chatId = update.getMessage().getChatId();
-            final var input = update.getMessage().getText();
+        final var user = ofNullable(update.getMessage().getFrom())
+            .map(User::getUserName)
+            .orElse("anonymous");
 
-            final var reply = interactionService.getReply(chatId, input);
+        final var chatId = update.getMessage().getChatId();
+        final var input = update.getMessage().getText();
 
-            SendMessage message = new SendMessage()
-                    .setChatId(chatId)
-                    .setText(reply);
-            try {
-                // Call method to send the message
-                execute(message);
-            } catch (TelegramApiException e) {
-                LOGGER.error("", e);
-            }
+        final var reply = interactionService.getReply(chatId, input);
+
+        LOGGER.trace("{} says: '{}', reply: '{}'", user, input, reply);
+
+        SendMessage message = new SendMessage()
+            .setChatId(chatId)
+            .enableMarkdown(true)
+            .disableWebPagePreview()
+            .setText(reply);
+        try {
+            // Call method to send the message
+            execute(message);
+        } catch (TelegramApiException e) {
+            LOGGER.error("Couldn't send reply to {}", user, e);
         }
     }
 
@@ -52,9 +64,10 @@ public class MosKommunalBot extends TelegramLongPollingBot {
     public String getBotToken() {
         final var token = System.getProperty("token");
         if (token == null) {
-            throw new IllegalStateException("Token is not found." +
-                    "Please set it up in the system property 'token'.");
+            throw new IllegalStateException("Token is not found. "
+                + "Please set it up in the system property 'token'.");
         }
+        LOGGER.trace("Token is found");
         return token;
     }
 }
