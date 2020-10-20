@@ -15,12 +15,9 @@ public class MosKommunalBot extends TelegramLongPollingBot {
 
     private final InteractionService interactionService;
 
-    private final String token;
-
     /** Constructor */
-    public MosKommunalBot(InteractionService interactionService, String token) {
+    public MosKommunalBot(InteractionService interactionService) {
         this.interactionService = interactionService;
-        this.token = token;
     }
 
     @Override
@@ -53,6 +50,11 @@ public class MosKommunalBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
+        final var token = System.getProperty("token");
+        if (token == null) {
+            throw new IllegalStateException("Token is not found." +
+                    "Please set it up in the system property 'token'");
+        }
         return token;
     }
 }
