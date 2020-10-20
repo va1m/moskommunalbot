@@ -1,15 +1,15 @@
 package com.va1m.moskommunalbot.interaction;
 
 import com.va1m.moskommunalbot.interaction.processors.InvalidInputException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
 /** Manages states to process response messages */
 public class InteractionService {
 
-    private static final Logger LOGGER = LogManager.getLogger(InteractionService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InteractionService.class);
 
     private static final Map<State, State> STATE_MACHINE = Map.of(
             State.START, State.WAITING_FOR_LAST_COLD_WATER_METERS,
