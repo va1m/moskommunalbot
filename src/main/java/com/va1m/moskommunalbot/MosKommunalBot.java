@@ -52,9 +52,10 @@ public class MosKommunalBot extends TelegramLongPollingBot {
     public String getBotToken() {
         final var token = System.getProperty("token");
         if (token == null) {
-            throw new IllegalStateException("Token is not found." +
+            throw new IllegalStateException("Token is not found. " +
                     "Please set it up in the system property 'token'.");
         }
+        LOGGER.trace("Token is found");
         return token;
     }
 }
