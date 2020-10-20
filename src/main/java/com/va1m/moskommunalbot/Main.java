@@ -8,8 +8,6 @@ import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.stream.Stream;
-
 /** Main class */
 public class Main {
 
@@ -21,16 +19,9 @@ public class Main {
     /** Main method */
     public static void main(String[] args) {
 
-        final var token = Stream.of(args)
-                .map(arg -> arg.split("="))
-                .filter(nameValPair -> "token".equalsIgnoreCase(nameValPair[0]))
-                .findAny()
-                .map(pair -> pair[1])
-                .orElseThrow();
-
         ApiContextInitializer.init();
         final var telegramBotsApi = new TelegramBotsApi();
-        final var mosKommunalBot = new MosKommunalBot(INTERACTION_SERVICE, token);
+        final var mosKommunalBot = new MosKommunalBot(INTERACTION_SERVICE);
         try {
             telegramBotsApi.registerBot(mosKommunalBot);
         } catch (TelegramApiException e) {
