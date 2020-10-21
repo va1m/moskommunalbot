@@ -1,4 +1,4 @@
-package com.va1m.moskommunalbot.interaction.processors;
+package com.va1m.moskommunalbot.interaction;
 
 /** Exception for the case when user enters invalid data */
 public class InvalidInputException extends RuntimeException {

@@ -26,19 +26,26 @@ public class MosKommunalBot extends TelegramLongPollingBot {
         // We check if the update has a message and the message has text
         if (update.hasMessage() && update.getMessage().hasText()) {
 
+            final var contact = update.getMessage().hasContact()
+                    ? update.getMessage().getContact()
+                    : "[no contact]";
+
             final var chatId = update.getMessage().getChatId();
             final var input = update.getMessage().getText();
 
             final var reply = interactionService.getReply(chatId, input);
 
+            LOGGER.trace("{} says: '{}', reply: '{}'", contact, input, reply);
+
             SendMessage message = new SendMessage()
                     .setChatId(chatId)
+                    .enableMarkdown(true)
                     .setText(reply);
             try {
                 // Call method to send the message
                 execute(message);
             } catch (TelegramApiException e) {
-                LOGGER.error("", e);
+                LOGGER.error("Couldn't send reply to {}", contact, e);
             }
         }
     }
