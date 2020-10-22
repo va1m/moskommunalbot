@@ -7,18 +7,27 @@ import com.va1m.moskommunalbot.priceproviders.ElectricityPricesProvider;
 import com.va1m.moskommunalbot.priceproviders.HotWaterPricesProvider;
 import com.va1m.moskommunalbot.priceproviders.PriceEntry;
 import com.va1m.moskommunalbot.priceproviders.WaterDisposingPricesProvider;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Stream;
 
 /** Prepare output message text for {@link State#SHOWING_RESULTS} state and then handles user input data */
 public class ResultsStateProcessor implements StateProcessor {
 
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
     final ColdWaterPricesProvider coldWater;
     final HotWaterPricesProvider hotWater;
     final WaterDisposingPricesProvider waterDisposing;
     final ElectricityPricesProvider electricity;
+
+    @RequiredArgsConstructor(staticName = "of")
+    private static class ExpenseEntry {
+        private final double amount;
+        private final String formattedText;
+    }
 
     /** Constructor */
     public ResultsStateProcessor(ColdWaterPricesProvider coldWater, HotWaterPricesProvider hotWater,
@@ -43,62 +52,71 @@ public class ResultsStateProcessor implements StateProcessor {
     @Override
     public String processOutput(InteractionContext interactionContext) {
 
-        var template = "- Холодная вода:%n" +
-                "%.2fруб. за %dкб.м.%n" +
-                "(%.2fруб/кб.м. с %s)%n%n";
+        var totalAmount = 0.0D;
+
+        var template = "- Холодная вода:%n"
+            + "%.2f руб. за %d кб.м.%n"
+            + "%.2f руб/кб.м. с %s%n%n";
         final var consumedColdWater =
-                interactionContext.getCurrentColdWaterMeters() - interactionContext.getLatestColdWaterMeters();
-        final var coldWaterText = getExpenseEntryText(coldWater.provide(), consumedColdWater, template);
+            interactionContext.getCurrentColdWaterMeters() - interactionContext.getLatestColdWaterMeters();
+        final var coldWaterEntry = getExpenseEntry(this.coldWater.provide(), consumedColdWater, template);
+        totalAmount += coldWaterEntry.amount;
 
-        template = "- Горячая вода:%n" +
-                "%.2fруб. за %dкб.м.%n" +
-                "(%.2fруб/кб.м. с %s)%n%n";
+        template = "- Горячая вода:%n"
+            + "%.2f руб. за %d кб.м.%n"
+            + "%.2f руб/кб.м. с %s%n%n";
         final var consumedHotWater =
-                interactionContext.getCurrentHotWaterMeters() - interactionContext.getLatestHotWaterMeters();
-        final var hotWaterText = getExpenseEntryText(hotWater.provide(), consumedHotWater, template);
+            interactionContext.getCurrentHotWaterMeters() - interactionContext.getLatestHotWaterMeters();
+        final var hotWaterEntry = getExpenseEntry(hotWater.provide(), consumedHotWater, template);
+        totalAmount += hotWaterEntry.amount;
 
-        template = "- Водоотвод (канализация):%n" +
-                "%.2fруб. за %dкб.м.%n" +
-                "(%.2fруб/кб.м. с %s)%n%n";
+        template = "- Водоотвод (канализация):%n"
+            + "%.2f руб. за %d кб.м.%n"
+            + "%.2f руб/кб.м. с %s%n%n";
         final var disposedWater = consumedColdWater + consumedHotWater;
-        final var disposedWaterText = getExpenseEntryText(waterDisposing.provide(), disposedWater, template);
+        final var disposedWaterEntry = getExpenseEntry(waterDisposing.provide(), disposedWater, template);
+        totalAmount += disposedWaterEntry.amount;
 
-        template = "- Электричество:%n" +
-                "%.2fруб. за %dКВт%n" +
-                "(%.2fруб/КВт с %s)%n";
+        template = "- Электричество:%n"
+            + "%.2f руб. за %d КВт%n"
+            + "%.2f руб/КВт с %s%n%n";
         final var consumedElectricity =
-                interactionContext.getCurrentElectricityMeters() - interactionContext.getLatestElectricityMeters();
-        final var consumedElectricityText =
-                getExpenseEntryText(electricity.provide(), consumedElectricity, template);
+            interactionContext.getCurrentElectricityMeters() - interactionContext.getLatestElectricityMeters();
+        final var consumedElectricityEntry =
+            getExpenseEntry(electricity.provide(), consumedElectricity, template);
+        totalAmount += consumedElectricityEntry.amount;
+
+        final var formattedTotalAmount = String.format("ВСЕГО: *%.2f руб.*%n%n", totalAmount);
 
         return "Стоимость коммунальных услуг:\n"
-                + "\n"
-                + coldWaterText
-                + hotWaterText
-                + disposedWaterText
-                + consumedElectricityText
-                + "\n"
-                + "Цены взяты из следующих источников:\n"
-                + "- [МосВодоКанал](http://www.mosvodokanal.ru/forabonents/tariffs/)\n"
-                + "- [МОЭК](https://online.moek.ru/clients/tarify-i-raschety/tarify)\n"
-                + "- [МосЭнергоСбыт](https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/kvartiry-i-doma-s-elektricheskimi-plitami.php)\n"
-                + "\n"
-                + "Для начала нового расчета наберите /new.";
+            + '\n'
+            + coldWaterEntry.formattedText
+            + hotWaterEntry.formattedText
+            + disposedWaterEntry.formattedText
+            + consumedElectricityEntry.formattedText
+            + formattedTotalAmount
+            + "Цены взяты из следующих источников:\n"
+            + "- [МосВодоКанал](http://www.mosvodokanal.ru/forabonents/tariffs/)\n"
+            + "- [МОЭК](https://online.moek.ru/clients/tarify-i-raschety/tarify)\n"
+            + "- [МосЭнергоСбыт](https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/kvartiry-i-doma-s-elektricheskimi-plitami.php)\n"
+            + "\n"
+            + "Для начала нового расчета наберите /new.";
     }
 
-    private static String getExpenseEntryText(PriceEntry[] priceEntries, int consumed, String template) {
-        final var today = LocalDate.now(ZoneId.of("Europe/Moscow"));
+    private static ExpenseEntry getExpenseEntry(PriceEntry[] priceEntries, int consumed, String template) {
+        final var today = LocalDate.now();
 
         return Stream.of(priceEntries)
-                .filter(price -> today.compareTo(price.getSince()) >= 0)
-                .filter(price -> today.compareTo(price.getTill()) <= 0)
-                .findFirst()
-                .map(price -> {
-                    final var dblPrice = ((double) price.getPrice()) / 100.0D;
-                    final var totalAmount = ((double) (consumed * price.getPrice())) / 100.0D;
-                    return String.format(template,
-                            totalAmount, consumed, dblPrice, price.getSince().toString());
-                })
-                .orElseThrow();
+            .filter(price -> today.compareTo(price.getSince()) >= 0)
+            .filter(price -> today.compareTo(price.getTill()) <= 0)
+            .findFirst()
+            .map(priceEntry -> {
+                final var dblPrice = ((double) priceEntry.getPrice()) / 100.0D;
+                final var amount = ((double) (consumed * priceEntry.getPrice())) / 100.0D;
+                final var formattedText = String.format(template,
+                    amount, consumed, dblPrice, priceEntry.getSince().format(FORMATTER));
+                return ExpenseEntry.of(amount, formattedText);
+            })
+            .orElseThrow();
     }
 }

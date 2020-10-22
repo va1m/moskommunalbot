@@ -15,14 +15,14 @@ public class InteractionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(InteractionService.class);
 
     private static final Map<State, State> STATE_MACHINE = Map.of(
-            State.START, State.WAITING_FOR_LAST_COLD_WATER_METERS,
-            State.WAITING_FOR_LAST_COLD_WATER_METERS, State.WAITING_FOR_CURRENT_COLD_WATER_METERS,
-            State.WAITING_FOR_CURRENT_COLD_WATER_METERS, State.WAITING_FOR_LAST_HOT_WATER_METERS,
-            State.WAITING_FOR_LAST_HOT_WATER_METERS, State.WAITING_FOR_CURRENT_HOT_WATER_METERS,
-            State.WAITING_FOR_CURRENT_HOT_WATER_METERS, State.WAITING_FOR_LAST_ELECTRICITY_METERS,
-            State.WAITING_FOR_LAST_ELECTRICITY_METERS, State.WAITING_FOR_CURRENT_ELECTRICITY_METERS,
-            State.WAITING_FOR_CURRENT_ELECTRICITY_METERS, State.SHOWING_RESULTS,
-            State.SHOWING_RESULTS, State.WAITING_FOR_LAST_COLD_WATER_METERS
+        State.START, State.WAITING_FOR_LAST_COLD_WATER_METERS,
+        State.WAITING_FOR_LAST_COLD_WATER_METERS, State.WAITING_FOR_CURRENT_COLD_WATER_METERS,
+        State.WAITING_FOR_CURRENT_COLD_WATER_METERS, State.WAITING_FOR_LAST_HOT_WATER_METERS,
+        State.WAITING_FOR_LAST_HOT_WATER_METERS, State.WAITING_FOR_CURRENT_HOT_WATER_METERS,
+        State.WAITING_FOR_CURRENT_HOT_WATER_METERS, State.WAITING_FOR_LAST_ELECTRICITY_METERS,
+        State.WAITING_FOR_LAST_ELECTRICITY_METERS, State.WAITING_FOR_CURRENT_ELECTRICITY_METERS,
+        State.WAITING_FOR_CURRENT_ELECTRICITY_METERS, State.SHOWING_RESULTS,
+        State.SHOWING_RESULTS, State.WAITING_FOR_LAST_COLD_WATER_METERS
     );
 
     private final Map<State, StateProcessor> stateProcessors;
@@ -40,11 +40,11 @@ public class InteractionService {
     public String getReply(long chatId, String input) {
 
         final var interactionContext = interactionDao.read(chatId)
-                .orElseGet(() -> {
-                    final var newInteractionContext = new InteractionContext();
-                    newInteractionContext.setNextState(State.START);
-                    return newInteractionContext;
-                });
+            .orElseGet(() -> {
+                final var newInteractionContext = new InteractionContext();
+                newInteractionContext.setNextState(State.START);
+                return newInteractionContext;
+            });
 
         try {
             final var currentStep = interactionContext.getNextState();
@@ -60,8 +60,8 @@ public class InteractionService {
             return iie.getMessage();
         } catch (Exception e) {
             LOGGER.error("", e);
-            return "Ups... Something went wrong.\n" +
-                    "See log.";
+            return "Ups... Something went wrong.\n"
+                + "See log.";
         }
     }
 }

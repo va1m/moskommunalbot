@@ -11,8 +11,8 @@ public class ElectricityPricesProvider {
 
     /** Provides prices with the durations they are being applying */
     public PriceEntry[] provide() {
-        return new PriceEntry[] {
-                PriceEntry.of(LocalDate.of(2020, 7, 1), LocalDate.of(2020, 12, 31).minusDays(1), 487)
+        return new PriceEntry[]{
+            PriceEntry.of(LocalDate.of(2020, 7, 1), LocalDate.of(2020, 12, 31).minusDays(1), 487)
         };
     }
 }
