@@ -18,7 +18,7 @@ public class LastColdWaterMetersStateProcessor implements StateProcessor {
 
     @Override
     public String processOutput(InteractionContext interactionContext) {
-        return "Привет! Начинаем новый расчет за коммунальные услуги.\n\n" +
-            "Пожалуйста, введите показание счетчика холодной воды на начало периода.";
+        return "Привет! Начинаем новый расчет за коммунальные услуги.\n\n"
+            + "Пожалуйста, введите показание счетчика холодной воды на начало периода.";
     }
 }

@@ -2,7 +2,15 @@ package com.va1m.moskommunalbot;
 
 import com.va1m.moskommunalbot.interaction.InteractionDao;
 import com.va1m.moskommunalbot.interaction.InteractionService;
-import com.va1m.moskommunalbot.interaction.stateprocessors.*;
+import com.va1m.moskommunalbot.interaction.stateprocessors.CurrentColdWaterMetersStateProcessor;
+import com.va1m.moskommunalbot.interaction.stateprocessors.CurrentElectricityMetersStateProcessor;
+import com.va1m.moskommunalbot.interaction.stateprocessors.CurrentHotWaterMetersStateProcessor;
+import com.va1m.moskommunalbot.interaction.stateprocessors.LastColdWaterMetersStateProcessor;
+import com.va1m.moskommunalbot.interaction.stateprocessors.LastElectricityMetersStateProcessor;
+import com.va1m.moskommunalbot.interaction.stateprocessors.LastHotWaterMetersStateProcessor;
+import com.va1m.moskommunalbot.interaction.stateprocessors.ResultsStateProcessor;
+import com.va1m.moskommunalbot.interaction.stateprocessors.StartStateProcessor;
+import com.va1m.moskommunalbot.interaction.stateprocessors.StateProcessor;
 import com.va1m.moskommunalbot.priceproviders.ColdWaterPricesProvider;
 import com.va1m.moskommunalbot.priceproviders.ElectricityPricesProvider;
 import com.va1m.moskommunalbot.priceproviders.HotWaterPricesProvider;
@@ -41,7 +49,7 @@ public class Main {
     }
 
     private static StateProcessor[] registerStateProcessors() {
-        return new StateProcessor[] {
+        return new StateProcessor[]{
             new StartStateProcessor(),
             new LastColdWaterMetersStateProcessor(),
             new CurrentColdWaterMetersStateProcessor(),
@@ -50,7 +58,7 @@ public class Main {
             new LastElectricityMetersStateProcessor(),
             new CurrentElectricityMetersStateProcessor(),
             new ResultsStateProcessor(COLD_WATER_PRICES_PROVIDER, HOT_WATER_PRICES_PROVIDER,
-                    WATER_DISPOSING_PRICES_PROVIDER, ELECTRICITY_PRICES_PROVIDER),
+                WATER_DISPOSING_PRICES_PROVIDER, ELECTRICITY_PRICES_PROVIDER),
         };
     }
 }

@@ -28,6 +28,6 @@
     <appender-ref ref="STDOUT" />
     <appender-ref ref="FILE" />
   </root>
-  <logger name="com.va1m.moskommunalbot" level="debug" />
+  <logger name="com.va1m.moskommunalbot" level="trace" />
 
 </configuration>
