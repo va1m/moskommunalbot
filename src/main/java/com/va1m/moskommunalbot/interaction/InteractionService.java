@@ -60,7 +60,8 @@ public class InteractionService {
             return iie.getMessage();
         } catch (Exception e) {
             LOGGER.error("", e);
-            return "Ups... Something went wrong.\n"
+            return "Ups...\n"
+                + "Something went wrong.\n"
                 + "See log.";
         }
     }
