@@ -25,6 +25,7 @@
     <logback.version>1.2.3</logback.version>
     <assertj.version>3.18.0</assertj.version>
     <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+    <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
 
   </properties>
 
@@ -95,6 +96,20 @@
 
   <build>
     <plugins>
+
+      <plugin>
+        <!-- Build an executable JAR -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>com.va1m.moskommunalbot.Main</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
 
       <plugin>
         <!--
