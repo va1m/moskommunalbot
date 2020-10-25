@@ -25,7 +25,7 @@
     <logback.version>1.2.3</logback.version>
     <assertj.version>3.18.0</assertj.version>
     <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
-    <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+    <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
 
   </properties>
 
@@ -98,17 +98,28 @@
     <plugins>
 
       <plugin>
-        <!-- Build an executable JAR -->
+        <artifactId>maven-assembly-plugin</artifactId>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>${maven-jar-plugin.version}</version>
+        <version>${maven-assembly-plugin.version}</version>
         <configuration>
           <archive>
             <manifest>
               <mainClass>com.va1m.moskommunalbot.Main</mainClass>
             </manifest>
           </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
         </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id> <!-- this is used for inheritance merges -->
+            <phase>package</phase> <!-- bind to the packaging phase -->
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
