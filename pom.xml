@@ -6,7 +6,7 @@
 
   <groupId>com.va1m.moskommunalbot</groupId>
   <artifactId>moskommunalbot</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -23,7 +23,8 @@
     <jsoup.version>1.13.1</jsoup.version>
     <telegrambots.version>4.9.1</telegrambots.version>
     <logback.version>1.2.3</logback.version>
-    <assertj.version>3.17.2</assertj.version>
+    <assertj.version>3.18.0</assertj.version>
+    <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
 
   </properties>
 
@@ -94,6 +95,7 @@
 
   <build>
     <plugins>
+
       <plugin>
         <!--
         https://www.mojohaus.org/versions-maven-plugin/index.html
@@ -105,29 +107,15 @@
         <version>${versions-maven-plugin.version}</version>
         <configuration>
           <generateBackupPoms>false</generateBackupPoms>
+          <rulesUri>file://${project.basedir}/mvn-version-rules.xml</rulesUri>
         </configuration>
       </plugin>
+
       <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>com.va1m.moskommunalbot.Main</mainClass>
-            </manifest>
-          </archive>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly</id> <!-- this is used for inheritance merges -->
-            <phase>package</phase> <!-- bind to the packaging phase -->
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
+        <!-- Surefire Plugin is designed to run unit tests. -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
       </plugin>
 
     </plugins>
