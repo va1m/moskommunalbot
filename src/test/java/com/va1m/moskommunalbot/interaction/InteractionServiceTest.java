@@ -4,10 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import com.va1m.moskommunalbot.interaction.stateprocessors.StateProcessor;
 import org.junit.jupiter.api.Test;
@@ -16,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
+import java.util.Set;
 
 /** Test for {@link InteractionService} */
 @ExtendWith(MockitoExtension.class)
@@ -42,10 +40,7 @@ class InteractionServiceTest {
         when(interactionDao.read(chatId)).thenReturn(Optional.of(interactionContext));
         when(lastColdWaterStateProcessor.processOutput(interactionContext)).thenReturn(hello);
 
-        final var stateProcessors = new StateProcessor[] {
-            startStateProcessor,
-            lastColdWaterStateProcessor
-        };
+        final var stateProcessors = Set.of(startStateProcessor, lastColdWaterStateProcessor);
         InteractionService interactionService = new InteractionService(interactionDao, stateProcessors);
 
         final var reply = interactionService.getReply(chatId, "Hi");
@@ -75,10 +70,7 @@ class InteractionServiceTest {
         doThrow(new InvalidInputException(errorMessage))
             .when(startStateProcessor).processInput(eq("Hi"), any());
 
-        final var stateProcessors = new StateProcessor[] {
-            startStateProcessor,
-            lastColdWaterStateProcessor
-        };
+        final var stateProcessors = Set.of(startStateProcessor, lastColdWaterStateProcessor);
         InteractionService interactionService = new InteractionService(interactionDao, stateProcessors);
 
         final var reply = interactionService.getReply(100L, "Hi");
@@ -95,10 +87,7 @@ class InteractionServiceTest {
         doThrow(IllegalStateException.class)
             .when(interactionDao).write(anyLong(), any());
 
-        final var stateProcessors = new StateProcessor[] {
-            startStateProcessor,
-            lastColdWaterStateProcessor
-        };
+        final var stateProcessors = Set.of(startStateProcessor, lastColdWaterStateProcessor);
         InteractionService interactionService = new InteractionService(interactionDao, stateProcessors);
 
         final var reply = interactionService.getReply(100L, "Hi");

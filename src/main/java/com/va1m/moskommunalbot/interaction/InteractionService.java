@@ -1,13 +1,14 @@
 package com.va1m.moskommunalbot.interaction;
 
+import com.google.inject.Inject;
 import com.va1m.moskommunalbot.interaction.stateprocessors.StateProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /** Manages states to process response messages */
 public class InteractionService {
@@ -29,10 +30,11 @@ public class InteractionService {
     private final InteractionDao interactionDao;
 
     /** Constructor */
-    public InteractionService(InteractionDao interactionDao, StateProcessor[] stateProcessors) {
+    @Inject
+    public InteractionService(InteractionDao interactionDao, Set<StateProcessor> stateProcessors) {
         this.interactionDao = interactionDao;
 
-        this.stateProcessors = Stream.of(stateProcessors)
+        this.stateProcessors = stateProcessors.stream()
             .collect(Collectors.toUnmodifiableMap(StateProcessor::forState, Function.identity()));
     }
 
