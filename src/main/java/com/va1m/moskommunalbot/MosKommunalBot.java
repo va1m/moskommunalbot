@@ -2,6 +2,7 @@ package com.va1m.moskommunalbot;
 
 import static java.util.Optional.ofNullable;
 
+import com.google.inject.Inject;
 import com.va1m.moskommunalbot.interaction.InteractionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ public class MosKommunalBot extends TelegramLongPollingBot {
     private final InteractionService interactionService;
 
     /** Constructor */
+    @Inject
     public MosKommunalBot(InteractionService interactionService) {
         this.interactionService = interactionService;
     }
