@@ -13,7 +13,7 @@ public class LastColdWaterMetersStateProcessor implements StateProcessor {
 
     @Override
     public void processInput(String input, InteractionContext interactionContext) {
-        storeIfValid(input, interactionContext::setLatestColdWaterMeters);
+        storeIfValid(input, interactionContext::setLastColdWaterMeters);
     }
 
     @Override

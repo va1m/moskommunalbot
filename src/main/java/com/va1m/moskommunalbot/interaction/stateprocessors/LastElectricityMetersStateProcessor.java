@@ -13,7 +13,7 @@ public class LastElectricityMetersStateProcessor implements StateProcessor {
 
     @Override
     public void processInput(String input, InteractionContext interactionContext) {
-        storeIfValid(input, interactionContext::setLatestElectricityMeters);
+        storeIfValid(input, interactionContext::setLastElectricityMeters);
     }
 
     @Override
