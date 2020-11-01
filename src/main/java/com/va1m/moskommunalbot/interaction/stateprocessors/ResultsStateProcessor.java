@@ -1,5 +1,6 @@
 package com.va1m.moskommunalbot.interaction.stateprocessors;
 
+import com.google.inject.Inject;
 import com.va1m.moskommunalbot.interaction.InteractionContext;
 import com.va1m.moskommunalbot.interaction.State;
 import com.va1m.moskommunalbot.priceproviders.ColdWaterPricesProvider;
@@ -30,6 +31,7 @@ public class ResultsStateProcessor implements StateProcessor {
     }
 
     /** Constructor */
+    @Inject
     public ResultsStateProcessor(ColdWaterPricesProvider coldWater, HotWaterPricesProvider hotWater,
         WaterDisposingPricesProvider waterDisposing, ElectricityPricesProvider electricity) {
 
