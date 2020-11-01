@@ -10,12 +10,12 @@ public class InteractionContext {
 
     private State nextState;
 
-    private Integer latestColdWaterMeters;
+    private Integer lastColdWaterMeters;
     private Integer currentColdWaterMeters;
 
-    private Integer latestHotWaterMeters;
+    private Integer lastHotWaterMeters;
     private Integer currentHotWaterMeters;
 
-    private Integer latestElectricityMeters;
+    private Integer lastElectricityMeters;
     private Integer currentElectricityMeters;
 }

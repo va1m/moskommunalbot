@@ -5,6 +5,7 @@ import com.va1m.moskommunalbot.interaction.InvalidInputException;
 import com.va1m.moskommunalbot.interaction.State;
 
 import java.util.function.IntConsumer;
+import java.util.function.IntSupplier;
 
 /** Base interface for all state processors handling user inputs and preparing output text messages for him */
 public interface StateProcessor {
@@ -19,11 +20,27 @@ public interface StateProcessor {
     String processOutput(InteractionContext interactionContext);
 
     default void storeIfValid(String input, IntConsumer setter) {
+        final int intInput;
         try {
-            final var intInput = Integer.parseInt(input.trim());
-            setter.accept(intInput);
+            intInput = Integer.parseInt(input.trim());
         } catch (NumberFormatException e) {
             throw new InvalidInputException("Только цифры, пожалуйста");
         }
+        setter.accept(intInput);
+    }
+
+    default void storeIfValid(String input, IntSupplier getter, IntConsumer setter) {
+        final int intInput;
+        try {
+            intInput = Integer.parseInt(input.trim());
+        } catch (NumberFormatException e) {
+            throw new InvalidInputException("Только цифры, пожалуйста");
+        }
+        final var lastMeterValue = getter.getAsInt();
+        if (intInput < lastMeterValue) {
+            throw new InvalidInputException("Текущее показание счётчика не может быть меньше предыдущего показания. "
+                + "Введите корректное показание счётчика.");
+        }
+        setter.accept(intInput);
     }
 }

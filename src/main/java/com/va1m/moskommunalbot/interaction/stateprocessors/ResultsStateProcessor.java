@@ -58,7 +58,7 @@ public class ResultsStateProcessor implements StateProcessor {
             + "%.2f руб. за %d кб.м.%n"
             + "%.2f руб/кб.м. с %s%n%n";
         final var consumedColdWater =
-            interactionContext.getCurrentColdWaterMeters() - interactionContext.getLatestColdWaterMeters();
+            interactionContext.getCurrentColdWaterMeters() - interactionContext.getLastColdWaterMeters();
         final var coldWaterEntry = getExpenseEntry(this.coldWater.provide(), consumedColdWater, template);
         totalAmount += coldWaterEntry.amount;
 
@@ -66,7 +66,7 @@ public class ResultsStateProcessor implements StateProcessor {
             + "%.2f руб. за %d кб.м.%n"
             + "%.2f руб/кб.м. с %s%n%n";
         final var consumedHotWater =
-            interactionContext.getCurrentHotWaterMeters() - interactionContext.getLatestHotWaterMeters();
+            interactionContext.getCurrentHotWaterMeters() - interactionContext.getLastHotWaterMeters();
         final var hotWaterEntry = getExpenseEntry(hotWater.provide(), consumedHotWater, template);
         totalAmount += hotWaterEntry.amount;
 
@@ -81,7 +81,7 @@ public class ResultsStateProcessor implements StateProcessor {
             + "%.2f руб. за %d КВт%n"
             + "%.2f руб/КВт с %s%n%n";
         final var consumedElectricity =
-            interactionContext.getCurrentElectricityMeters() - interactionContext.getLatestElectricityMeters();
+            interactionContext.getCurrentElectricityMeters() - interactionContext.getLastElectricityMeters();
         final var consumedElectricityEntry =
             getExpenseEntry(electricity.provide(), consumedElectricity, template);
         totalAmount += consumedElectricityEntry.amount;
