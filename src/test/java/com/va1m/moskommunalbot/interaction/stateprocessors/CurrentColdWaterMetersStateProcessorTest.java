@@ -21,34 +21,38 @@ class CurrentColdWaterMetersStateProcessorTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"100", "101"})
+    @CsvSource({
+        "100", "100.0", "100,0", "0100,0", "100.0009",
+        "101", "100.001", "100,001"})
     void currentInputMoreOrEqualToLast(String currentMeters) {
         final var interactionContext = new InteractionContext();
-        interactionContext.setLastColdWaterMeters(100);
+        interactionContext.setLastColdWaterMeters(100000);
         stateProcessor.processInput(currentMeters, interactionContext);
-        assertThat(interactionContext.getCurrentColdWaterMeters()).isEqualTo(Integer.parseInt(currentMeters));
+        final var expected = (int) (Double.parseDouble(currentMeters.replace(",", ".")) * 1000.0D);
+        assertThat(interactionContext.getCurrentColdWaterMeters()).isEqualTo(expected);
     }
 
     @Test
     void currentInputLessThenLast() {
         final var interactionContext = new InteractionContext();
-        interactionContext.setLastColdWaterMeters(101);
+        interactionContext.setLastColdWaterMeters(100001);
         assertThatExceptionOfType(InvalidInputException.class)
-            .isThrownBy(() -> stateProcessor.processInput("100", interactionContext))
+            .isThrownBy(() -> stateProcessor.processInput("100.000", interactionContext))
             .withMessage("Текущее показание счётчика не может быть меньше предыдущего показания. Введите корректное показание счётчика.");
     }
 
     @Test
     void currentInputIsNotNumber() {
         final var interactionContext = new InteractionContext();
-        interactionContext.setLastColdWaterMeters(101);
         assertThatExceptionOfType(InvalidInputException.class)
             .isThrownBy(() -> stateProcessor.processInput("abc", interactionContext))
-            .withMessage("Только цифры, пожалуйста");
+            .withMessage("Только цифры, запятую или точку, пожалуйста.");
     }
 
     @Test
     void processOutput() {
-        assertThat(stateProcessor.processOutput(null)).isEqualTo("Теперь, пожалуйста, введите текущее показание счетчика холодной воды.");
+        final var expected = "Теперь, пожалуйста, введите текущее показание счетчика холодной воды. "
+            + "В метрах кубических, например: 410,127.";
+        assertThat(stateProcessor.processOutput(null)).isEqualTo(expected);
     }
 }

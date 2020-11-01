@@ -13,11 +13,12 @@ public class CurrentElectricityMetersStateProcessor implements StateProcessor {
 
     @Override
     public void processInput(String input, InteractionContext interactionContext) {
-        storeIfValid(input, interactionContext::getLastElectricityMeters, interactionContext::setCurrentElectricityMeters);
+        storeIfValid(input, 1, interactionContext::getLastElectricityMeters, interactionContext::setCurrentElectricityMeters);
     }
 
     @Override
     public String processOutput(InteractionContext interactionContext) {
-        return "Введите текущее показание счетчика электричества.";
+        return "Введите текущее показание счетчика электричества. "
+            + "В киловаттах, например: 23451,7.";
     }
 }

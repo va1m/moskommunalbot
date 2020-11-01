@@ -13,11 +13,12 @@ public class CurrentHotWaterMetersStateProcessor implements StateProcessor {
 
     @Override
     public void processInput(String input, InteractionContext interactionContext) {
-        storeIfValid(input, interactionContext::getLastHotWaterMeters, interactionContext::setCurrentHotWaterMeters);
+        storeIfValid(input, 3, interactionContext::getLastHotWaterMeters, interactionContext::setCurrentHotWaterMeters);
     }
 
     @Override
     public String processOutput(InteractionContext interactionContext) {
-        return "Введите текущее показание счетчика горячей воды.";
+        return "Введите текущее показание счетчика горячей воды. "
+            + "В метрах кубических, например: 621,334.";
     }
 }
