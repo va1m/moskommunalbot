@@ -3,6 +3,7 @@ package com.va1m.moskommunalbot.interaction.stateprocessors;
 import com.google.inject.Inject;
 import com.va1m.moskommunalbot.interaction.InteractionContext;
 import com.va1m.moskommunalbot.interaction.State;
+import com.va1m.moskommunalbot.interaction.TimeService;
 import com.va1m.moskommunalbot.priceproviders.ColdWaterPricesProvider;
 import com.va1m.moskommunalbot.priceproviders.ElectricityPricesProvider;
 import com.va1m.moskommunalbot.priceproviders.HotWaterPricesProvider;
@@ -10,7 +11,6 @@ import com.va1m.moskommunalbot.priceproviders.PriceEntry;
 import com.va1m.moskommunalbot.priceproviders.WaterDisposingPricesProvider;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Stream;
 
@@ -23,6 +23,7 @@ public class ResultsStateProcessor implements StateProcessor {
     final HotWaterPricesProvider hotWater;
     final WaterDisposingPricesProvider waterDisposing;
     final ElectricityPricesProvider electricity;
+    final TimeService timeService;
 
     @RequiredArgsConstructor(staticName = "of")
     private static class ExpenseEntry {
@@ -33,12 +34,13 @@ public class ResultsStateProcessor implements StateProcessor {
     /** Constructor */
     @Inject
     public ResultsStateProcessor(ColdWaterPricesProvider coldWater, HotWaterPricesProvider hotWater,
-        WaterDisposingPricesProvider waterDisposing, ElectricityPricesProvider electricity) {
+        WaterDisposingPricesProvider waterDisposing, ElectricityPricesProvider electricity, TimeService timeService) {
 
         this.coldWater = coldWater;
         this.hotWater = hotWater;
         this.waterDisposing = waterDisposing;
         this.electricity = electricity;
+        this.timeService = timeService;
     }
 
     @Override
@@ -61,7 +63,7 @@ public class ResultsStateProcessor implements StateProcessor {
             + "%.2f руб/кб.м. с %s%n%n";
         final var consumedColdWater =
             ((double)(interactionContext.getCurrentColdWaterMeters() - interactionContext.getLastColdWaterMeters())) / 1000.0D;
-        final var coldWaterEntry = getExpenseEntry(this.coldWater.provide(), consumedColdWater, template);
+        final var coldWaterEntry = getExpenseEntry(coldWater.provide(), consumedColdWater, template);
         totalAmount += coldWaterEntry.amount;
 
         template = "- Горячая вода:%n"
@@ -105,8 +107,8 @@ public class ResultsStateProcessor implements StateProcessor {
             + "Для начала нового расчета наберите /new.";
     }
 
-    private static ExpenseEntry getExpenseEntry(PriceEntry[] priceEntries, double consumed, String template) {
-        final var today = LocalDate.now();
+    private ExpenseEntry getExpenseEntry(PriceEntry[] priceEntries, double consumed, String template) {
+        final var today = timeService.getToday();
 
         return Stream.of(priceEntries)
             .filter(price -> today.compareTo(price.getSince()) >= 0)

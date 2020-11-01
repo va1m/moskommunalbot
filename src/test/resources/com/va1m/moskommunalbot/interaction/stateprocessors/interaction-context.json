@@ -1,0 +1,9 @@
+{
+  "nextState": "START",
+  "lastColdWaterMeters": "100000",
+  "currentColdWaterMeters": "101000",
+  "lastHotWaterMeters": "200000",
+  "currentHotWaterMeters": "202000",
+  "lastElectricityMeters": "100000",
+  "currentElectricityMeters": "100010"
+}
