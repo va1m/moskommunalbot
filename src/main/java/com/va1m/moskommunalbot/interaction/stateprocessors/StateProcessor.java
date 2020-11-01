@@ -19,28 +19,28 @@ public interface StateProcessor {
     /** Provides methods (processors) to build output text messages for user */
     String processOutput(InteractionContext interactionContext);
 
-    default void storeIfValid(String input, IntConsumer setter) {
-        final int intInput;
-        try {
-            intInput = Integer.parseInt(input.trim());
-        } catch (NumberFormatException e) {
-            throw new InvalidInputException("Только цифры, пожалуйста");
-        }
+    default void storeIfValid(String input, int accuracy, IntConsumer setter) {
+        final int intInput = getInputAsInt(input, accuracy);
         setter.accept(intInput);
     }
 
-    default void storeIfValid(String input, IntSupplier getter, IntConsumer setter) {
-        final int intInput;
-        try {
-            intInput = Integer.parseInt(input.trim());
-        } catch (NumberFormatException e) {
-            throw new InvalidInputException("Только цифры, пожалуйста");
-        }
+    default void storeIfValid(String input, int accuracy, IntSupplier getter, IntConsumer setter) {
+        final int intInput = getInputAsInt(input, accuracy);
         final var lastMeterValue = getter.getAsInt();
         if (intInput < lastMeterValue) {
             throw new InvalidInputException("Текущее показание счётчика не может быть меньше предыдущего показания. "
                 + "Введите корректное показание счётчика.");
         }
         setter.accept(intInput);
+    }
+
+    private static int getInputAsInt(String input, int accuracy) {
+        final int intInput;
+        try {
+            intInput = (int)(Double.parseDouble(input.replace(",", ".").trim()) * Math.pow(10.0D, accuracy));
+        } catch (NumberFormatException e) {
+            throw new InvalidInputException("Только цифры, запятую или точку, пожалуйста.");
+        }
+        return intInput;
     }
 }
