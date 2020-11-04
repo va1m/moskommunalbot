@@ -1,7 +1,6 @@
 package com.va1m.moskommunalbot.interaction.stateprocessors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import com.va1m.moskommunalbot.interaction.State;
 import org.junit.jupiter.api.Test;
@@ -18,8 +17,6 @@ class StartStateProcessorTest {
 
     @Test
     void processOutput() {
-        assertThatIllegalStateException()
-            .isThrownBy(() -> stateProcessor.processOutput(null))
-            .withMessage("Shouldn't be called");
+        assertThat(stateProcessor.buildMessageForUser(null)).isNull();
     }
 }
