@@ -3,9 +3,10 @@ package com.va1m.moskommunalbot.interaction.stateprocessors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.va1m.moskommunalbot.interaction.InteractionContext;
 import com.va1m.moskommunalbot.interaction.State;
 import com.va1m.moskommunalbot.interaction.TimeService;
+import com.va1m.moskommunalbot.model.Calculation;
+import com.va1m.moskommunalbot.model.InteractionMessage;
 import com.va1m.moskommunalbot.priceproviders.ColdWaterPricesProvider;
 import com.va1m.moskommunalbot.priceproviders.ElectricityPricesProvider;
 import com.va1m.moskommunalbot.priceproviders.HotWaterPricesProvider;
@@ -52,7 +53,7 @@ class ResultsStateProcessorTest {
 
         final var interactionContext = Json.deserialize(
             "com/va1m/moskommunalbot/interaction/stateprocessors/interaction-context.json",
-            InteractionContext.class);
+            Calculation.class);
 
         final var priceEntry = PriceEntry.of(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 31), 123);
         when(coldWater.provide()).thenReturn(new PriceEntry[] { priceEntry });
@@ -61,7 +62,7 @@ class ResultsStateProcessorTest {
         when(electricity.provide()).thenReturn(new PriceEntry[] { priceEntry });
         when(timeService.getToday()).thenReturn(LocalDate.of(2020, 7, 1));
 
-        final var output = stateProcessor.processOutput(interactionContext);
+        final var output = stateProcessor.buildMessageForUser(interactionContext);
 
         final var expected = "Стоимость коммунальных услуг:\n\n"
             + "- Холодная вода:\n"
@@ -83,6 +84,8 @@ class ResultsStateProcessorTest {
             + "- [МосЭнергоСбыт](https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/kvartiry-i-doma-s-elektricheskimi-plitami.php)\n\n"
             + "Для начала нового расчета наберите /new.";
 
-        assertThat(output).isEqualTo(expected);
+        assertThat(output)
+            .usingRecursiveComparison()
+            .isEqualTo(InteractionMessage.of(expected));
     }
 }

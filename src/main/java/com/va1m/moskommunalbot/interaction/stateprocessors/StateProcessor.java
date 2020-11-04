@@ -1,6 +1,7 @@
 package com.va1m.moskommunalbot.interaction.stateprocessors;
 
-import com.va1m.moskommunalbot.interaction.InteractionContext;
+import com.va1m.moskommunalbot.model.InteractionMessage;
+import com.va1m.moskommunalbot.model.Calculation;
 import com.va1m.moskommunalbot.interaction.InvalidInputException;
 import com.va1m.moskommunalbot.interaction.State;
 
@@ -13,11 +14,11 @@ public interface StateProcessor {
     /** For which state the processor is */
     State forState();
 
-    /** Processes user input and put valid data into {@link InteractionContext} */
-    void processInput(String input, InteractionContext interactionContext);
+    /** Returns a {@link InteractionMessage} to send to user */
+    InteractionMessage buildMessageForUser(Calculation calculation);
 
-    /** Provides methods (processors) to build output text messages for user */
-    String processOutput(InteractionContext interactionContext);
+    /** Processes user answer and put valid data into {@link Calculation} */
+    void processAnswer(String input, Calculation calculation);
 
     default void storeIfValid(String input, int accuracy, IntConsumer setter) {
         final int intInput = getInputAsInt(input, accuracy);

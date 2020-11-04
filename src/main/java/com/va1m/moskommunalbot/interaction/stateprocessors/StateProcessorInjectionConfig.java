@@ -21,5 +21,6 @@ public class StateProcessorInjectionConfig extends AbstractModule {
         multibinder.addBinding().to(LastHotWaterMetersStateProcessor.class);
         multibinder.addBinding().to(ResultsStateProcessor.class);
         multibinder.addBinding().to(StartStateProcessor.class);
+        multibinder.addBinding().to(UseLastMetersStateProcessor.class);
     }
 }

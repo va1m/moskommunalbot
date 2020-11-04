@@ -3,6 +3,15 @@
 A telegram bot calculating communal expenses for hot, cold
  water, for water disposing, and for electricity in Moscow.
 
+## Requirements
+
+* JDK11 - OpenJDK HotSpot, for example.
+* Postgres database - See `src/main/sql/create-tables.sql` script 
+  to create mandatory tables.
+  Put connection URL in `dburl` system property.
+* Token taken from [BotFather](https://t.me/BotFather) bot.
+  Put the token into `token` system property.
+
 ## Scenario
 
 * User selects "new calculation"
@@ -31,9 +40,9 @@ Electricity:
 
 ## The prices are from
 
-* Cold water and disposing: http://www.mosvodokanal.ru/forabonents/tariffs/
-* Hot water: https://online.moek.ru/clients/tarify-i-raschety/tarify
-* Electricity: https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/kvartiry-i-doma-s-elektricheskimi-plitami.php
+* [Cold water and disposing](http://www.mosvodokanal.ru/forabonents/tariffs/)
+* [Hot water](https://online.moek.ru/clients/tarify-i-raschety/tarify)
+* [Electricity](https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/kvartiry-i-doma-s-elektricheskimi-plitami.php)
 
 ## Where the bot lives?
 
