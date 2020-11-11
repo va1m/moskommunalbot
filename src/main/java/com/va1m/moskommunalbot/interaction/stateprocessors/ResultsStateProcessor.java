@@ -1,7 +1,8 @@
 package com.va1m.moskommunalbot.interaction.stateprocessors;
 
 import com.google.inject.Inject;
-import com.va1m.moskommunalbot.interaction.InteractionContext;
+import com.va1m.moskommunalbot.model.InteractionMessage;
+import com.va1m.moskommunalbot.model.Calculation;
 import com.va1m.moskommunalbot.interaction.State;
 import com.va1m.moskommunalbot.interaction.TimeService;
 import com.va1m.moskommunalbot.priceproviders.ColdWaterPricesProvider;
@@ -49,12 +50,7 @@ public class ResultsStateProcessor implements StateProcessor {
     }
 
     @Override
-    public void processInput(String input, InteractionContext interactionContext) {
-        // Nothing to do here
-    }
-
-    @Override
-    public String processOutput(InteractionContext interactionContext) {
+    public InteractionMessage buildMessageForUser(Calculation calculation) {
 
         var totalAmount = 0.0D;
 
@@ -62,7 +58,7 @@ public class ResultsStateProcessor implements StateProcessor {
             + "*%.2f руб.* за %.3f кб.м.%n"
             + "%.2f руб/кб.м. с %s%n%n";
         final var consumedColdWater =
-            ((double)(interactionContext.getCurrentColdWaterMeters() - interactionContext.getLastColdWaterMeters())) / 1000.0D;
+            ((double)(calculation.getCurrentColdWaterMeters() - calculation.getLastColdWaterMeters())) / 1000.0D;
         final var coldWaterEntry = getExpenseEntry(coldWater.provide(), consumedColdWater, template);
         totalAmount += coldWaterEntry.amount;
 
@@ -70,7 +66,7 @@ public class ResultsStateProcessor implements StateProcessor {
             + "*%.2f руб.* за %.3f кб.м.%n"
             + "%.2f руб/кб.м. с %s%n%n";
         final var consumedHotWater =
-            ((double)(interactionContext.getCurrentHotWaterMeters() - interactionContext.getLastHotWaterMeters())) / 1000.0D;
+            ((double)(calculation.getCurrentHotWaterMeters() - calculation.getLastHotWaterMeters())) / 1000.0D;
         final var hotWaterEntry = getExpenseEntry(hotWater.provide(), consumedHotWater, template);
         totalAmount += hotWaterEntry.amount;
 
@@ -85,14 +81,14 @@ public class ResultsStateProcessor implements StateProcessor {
             + "*%.2f руб.* за %.1f КВт%n"
             + "%.2f руб/КВт с %s%n%n";
         final var consumedElectricity =
-            ((double)(interactionContext.getCurrentElectricityMeters() - interactionContext.getLastElectricityMeters())) / 10.0D;
+            ((double)(calculation.getCurrentElectricityMeters() - calculation.getLastElectricityMeters())) / 10.0D;
         final var consumedElectricityEntry =
             getExpenseEntry(electricity.provide(), consumedElectricity, template);
         totalAmount += consumedElectricityEntry.amount;
 
         final var formattedTotalAmount = String.format("ВСЕГО: *%.2f руб.*%n%n", totalAmount);
 
-        return "Стоимость коммунальных услуг:\n"
+        final var text = "Стоимость коммунальных услуг:\n"
             + '\n'
             + coldWaterEntry.formattedText
             + hotWaterEntry.formattedText
@@ -105,6 +101,7 @@ public class ResultsStateProcessor implements StateProcessor {
             + "- [МосЭнергоСбыт](https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/kvartiry-i-doma-s-elektricheskimi-plitami.php)\n"
             + "\n"
             + "Для начала нового расчета наберите /new.";
+        return InteractionMessage.of(text);
     }
 
     private ExpenseEntry getExpenseEntry(PriceEntry[] priceEntries, double consumed, String template) {
@@ -122,5 +119,10 @@ public class ResultsStateProcessor implements StateProcessor {
                 return ExpenseEntry.of(amount, formattedText);
             })
             .orElseThrow();
+    }
+
+    @Override
+    public void processAnswer(String input, Calculation calculation) {
+        // Nothing to do here
     }
 }

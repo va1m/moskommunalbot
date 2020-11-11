@@ -1,6 +1,7 @@
 package com.va1m.moskommunalbot.interaction.stateprocessors;
 
-import com.va1m.moskommunalbot.interaction.InteractionContext;
+import com.va1m.moskommunalbot.model.InteractionMessage;
+import com.va1m.moskommunalbot.model.Calculation;
 import com.va1m.moskommunalbot.interaction.State;
 
 /** Prepare output message text for {@link State#START} */
@@ -12,12 +13,12 @@ public class StartStateProcessor implements StateProcessor {
     }
 
     @Override
-    public void processInput(String input, InteractionContext interactionContext) {
-        // Nothing to do here
+    public InteractionMessage buildMessageForUser(Calculation calculation) {
+        return null;
     }
 
     @Override
-    public String processOutput(InteractionContext interactionContext) {
-        throw new IllegalStateException("Shouldn't be called");
+    public void processAnswer(String input, Calculation calculation) {
+        // Do nothing here
     }
 }

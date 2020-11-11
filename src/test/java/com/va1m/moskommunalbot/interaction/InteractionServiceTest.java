@@ -4,8 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
+import com.va1m.moskommunalbot.model.Calculation;
+import com.va1m.moskommunalbot.model.InteractionMessage;
 import com.va1m.moskommunalbot.interaction.stateprocessors.StateProcessor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,39 +25,39 @@ import java.util.Set;
 class InteractionServiceTest {
 
     @Mock
-    private InteractionDao interactionDao;
+    private CalculationDao calculationDao;
 
     @Mock
-    private StateProcessor startStateProcessor;
+    private StateProcessor firstStateProcessor;
 
     @Mock
-    private StateProcessor lastColdWaterStateProcessor;
+    private StateProcessor secondStateProcessor;
 
     @Test
     void getReplyForInitState() {
         final var chatId = 100L;
-        final var hello = "Hello";
-        final var interactionContext = new InteractionContext();
-        interactionContext.setNextState(State.START);
+        final var hello = InteractionMessage.of("Hello");
+        final var interactionContext = new Calculation();
+        interactionContext.setState(State.START);
 
-        when(startStateProcessor.forState()).thenReturn(State.START);
-        when(lastColdWaterStateProcessor.forState()).thenReturn(State.WAITING_FOR_LAST_COLD_WATER_METERS);
-        when(interactionDao.read(chatId)).thenReturn(Optional.of(interactionContext));
-        when(lastColdWaterStateProcessor.processOutput(interactionContext)).thenReturn(hello);
+        when(firstStateProcessor.forState()).thenReturn(State.START);
+        when(secondStateProcessor.forState()).thenReturn(State.USE_LAST_METERS);
+        when(calculationDao.read(chatId)).thenReturn(Optional.of(interactionContext));
+        when(secondStateProcessor.buildMessageForUser(interactionContext)).thenReturn(hello);
 
-        final var stateProcessors = Set.of(startStateProcessor, lastColdWaterStateProcessor);
-        InteractionService interactionService = new InteractionService(interactionDao, stateProcessors);
+        final var stateProcessors = Set.of(firstStateProcessor, secondStateProcessor);
+        InteractionService interactionService = new InteractionService(calculationDao, stateProcessors);
 
-        final var reply = interactionService.getReply(chatId, "Hi");
+        final var reply = interactionService.processState(chatId, "Hi");
 
         assertThat(reply).isEqualTo(hello);
 
-        verify(interactionDao).write(chatId, interactionContext);
-        verify(startStateProcessor).processInput(eq("Hi"), any());
-        verifyNoMoreInteractions(interactionDao, startStateProcessor);
+        verify(calculationDao).write(chatId, interactionContext);
+        verify(firstStateProcessor).processAnswer(eq("Hi"), any());
+        verifyNoMoreInteractions(calculationDao, firstStateProcessor);
 
-        final var expectedInteractionContext = new InteractionContext();
-        expectedInteractionContext.setNextState(State.WAITING_FOR_LAST_COLD_WATER_METERS);
+        final var expectedInteractionContext = new Calculation();
+        expectedInteractionContext.setState(State.USE_LAST_METERS);
 
         assertThat(interactionContext)
             .usingRecursiveComparison()
@@ -64,34 +69,42 @@ class InteractionServiceTest {
 
         final var errorMessage = "Only numbers, please.";
 
-        when(startStateProcessor.forState()).thenReturn(State.START);
-        when(lastColdWaterStateProcessor.forState()).thenReturn(State.WAITING_FOR_LAST_COLD_WATER_METERS);
+        when(firstStateProcessor.forState()).thenReturn(State.START);
+        when(secondStateProcessor.forState()).thenReturn(State.LAST_COLD_WATER_METERS);
 
         doThrow(new InvalidInputException(errorMessage))
-            .when(startStateProcessor).processInput(eq("Hi"), any());
+            .when(firstStateProcessor).processAnswer(eq("Hi"), any());
 
-        final var stateProcessors = Set.of(startStateProcessor, lastColdWaterStateProcessor);
-        InteractionService interactionService = new InteractionService(interactionDao, stateProcessors);
+        final var stateProcessors = Set.of(firstStateProcessor, secondStateProcessor);
+        InteractionService interactionService = new InteractionService(calculationDao, stateProcessors);
 
-        final var reply = interactionService.getReply(100L, "Hi");
+        final var reply = interactionService.processState(100L, "Hi");
 
-        assertThat(reply).isEqualTo(errorMessage);
+        final var expected = InteractionMessage.of(errorMessage);
+
+        assertThat(reply)
+            .usingRecursiveComparison()
+            .isEqualTo(expected);
     }
 
     @Test
     void getReplyWithException() {
 
-        when(startStateProcessor.forState()).thenReturn(State.START);
-        when(lastColdWaterStateProcessor.forState()).thenReturn(State.WAITING_FOR_LAST_COLD_WATER_METERS);
+        when(firstStateProcessor.forState()).thenReturn(State.START);
+        when(secondStateProcessor.forState()).thenReturn(State.LAST_COLD_WATER_METERS);
 
         doThrow(IllegalStateException.class)
-            .when(interactionDao).write(anyLong(), any());
+            .when(calculationDao).write(anyLong(), any());
 
-        final var stateProcessors = Set.of(startStateProcessor, lastColdWaterStateProcessor);
-        InteractionService interactionService = new InteractionService(interactionDao, stateProcessors);
+        final var stateProcessors = Set.of(firstStateProcessor, secondStateProcessor);
+        InteractionService interactionService = new InteractionService(calculationDao, stateProcessors);
 
-        final var reply = interactionService.getReply(100L, "Hi");
+        final var reply = interactionService.processState(100L, "Hi");
 
-        assertThat(reply).isEqualTo("Ups...\nSomething went wrong.\nSee log.");
+        final var expected = InteractionMessage.of("Ups...\nSomething went wrong.\nSee log.");
+
+        assertThat(reply)
+            .usingRecursiveComparison()
+            .isEqualTo(expected);
     }
 }

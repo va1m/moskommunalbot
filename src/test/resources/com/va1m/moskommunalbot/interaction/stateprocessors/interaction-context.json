@@ -1,5 +1,5 @@
 {
-  "nextState": "START",
+  "state": "START",
   "lastColdWaterMeters": "100000",
   "currentColdWaterMeters": "101000",
   "lastHotWaterMeters": "200000",
