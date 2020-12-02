@@ -52,41 +52,49 @@ public class ResultsStateProcessor implements StateProcessor {
     @Override
     public InteractionMessage buildMessageForUser(Calculation calculation) {
 
+        String template;
+        double current;
+        double last;
+        double consumed;
+
         var totalAmount = 0.0D;
 
-        var template = "- Холодная вода:%n"
-            + "*%.2f руб.* за %.3f кб.м.%n"
-            + "%.2f руб/кб.м. с %s%n%n";
-        final var consumedColdWater =
-            ((double)(calculation.getCurrentColdWaterMeters() - calculation.getLastColdWaterMeters())) / 1000.0D;
-        final var coldWaterEntry = getExpenseEntry(coldWater.provide(), consumedColdWater, template);
+        template = "- Холодная вода: *%.2f*₽%n"
+            + "%.3f - %.3f = %.3fм³.%n"
+            + "Тариф: %.2f₽/м³ с %s%n%n";
+        current = calculation.getCurrentColdWaterMeters() / 1000.0D;
+        last = calculation.getLastColdWaterMeters() / 1000.0D;
+        final var consumedColdWater = current - last;
+        final var coldWaterEntry = getExpenseEntry(coldWater.provide(), current, last, consumedColdWater, template);
         totalAmount += coldWaterEntry.amount;
 
-        template = "- Горячая вода:%n"
-            + "*%.2f руб.* за %.3f кб.м.%n"
-            + "%.2f руб/кб.м. с %s%n%n";
-        final var consumedHotWater =
-            ((double)(calculation.getCurrentHotWaterMeters() - calculation.getLastHotWaterMeters())) / 1000.0D;
-        final var hotWaterEntry = getExpenseEntry(hotWater.provide(), consumedHotWater, template);
+        template = "- Горячая вода: *%.2f*₽%n"
+            + "%.3f - %.3f = %.3fм³%n"
+            + "Тариф: %.2f₽/м³ с %s%n%n";
+        current = calculation.getCurrentHotWaterMeters() / 1000.0D;
+        last = calculation.getLastHotWaterMeters() / 1000.0D;
+        final var consumedHotWater = current - last;
+        final var hotWaterEntry = getExpenseEntry(hotWater.provide(), current, last, consumedHotWater, template);
         totalAmount += hotWaterEntry.amount;
 
-        template = "- Водоотвод (канализация):%n"
-            + "*%.2f руб.* за %.3f кб.м.%n"
-            + "%.2f руб/кб.м. с %s%n%n";
+        template = "- Водоотвод (канализация): *%.2f*₽%n"
+            + "%.3f + %.3f = %.3fм³%n"
+            + "Тариф: %.2f₽/м³ с %s%n%n";
         final var disposedWater = consumedColdWater + consumedHotWater;
-        final var disposedWaterEntry = getExpenseEntry(waterDisposing.provide(), disposedWater, template);
+        final var disposedWaterEntry = getExpenseEntry(waterDisposing.provide(), consumedColdWater, consumedHotWater, disposedWater, template);
         totalAmount += disposedWaterEntry.amount;
 
-        template = "- Электричество:%n"
-            + "*%.2f руб.* за %.1f КВт%n"
-            + "%.2f руб/КВт с %s%n%n";
-        final var consumedElectricity =
-            ((double)(calculation.getCurrentElectricityMeters() - calculation.getLastElectricityMeters())) / 10.0D;
+        template = "- Электричество: *%.2f*₽%n"
+            + "%.3f - %.3f = %.1fКВт%n"
+            + "Тариф: %.2f₽/КВт с %s%n%n";
+        current = calculation.getCurrentElectricityMeters() / 10.0D;
+        last = calculation.getLastElectricityMeters() / 10.0D;
+        final var consumedElectricity = current - last;
         final var consumedElectricityEntry =
-            getExpenseEntry(electricity.provide(), consumedElectricity, template);
+            getExpenseEntry(electricity.provide(), current, last, consumedElectricity, template);
         totalAmount += consumedElectricityEntry.amount;
 
-        final var formattedTotalAmount = String.format("ВСЕГО: *%.2f руб.*%n%n", totalAmount);
+        final var formattedTotalAmount = String.format("ВСЕГО: *%.2f*₽%n%n", totalAmount);
 
         final var text = "Стоимость коммунальных услуг:\n"
             + '\n'
@@ -104,7 +112,7 @@ public class ResultsStateProcessor implements StateProcessor {
         return InteractionMessage.of(text);
     }
 
-    private ExpenseEntry getExpenseEntry(PriceEntry[] priceEntries, double consumed, String template) {
+    private ExpenseEntry getExpenseEntry(PriceEntry[] priceEntries, double a, double b, double consumed, String template) {
         final var today = timeService.getToday();
 
         return Stream.of(priceEntries)
@@ -115,7 +123,7 @@ public class ResultsStateProcessor implements StateProcessor {
                 final var dblPrice = ((double) priceEntry.getPrice()) / 100.0D;
                 final var amount = consumed * dblPrice;
                 final var formattedText = String.format(template,
-                    amount, consumed, dblPrice, priceEntry.getSince().format(FORMATTER));
+                    amount, a, b, consumed, dblPrice, priceEntry.getSince().format(FORMATTER));
                 return ExpenseEntry.of(amount, formattedText);
             })
             .orElseThrow();
