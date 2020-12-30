@@ -60,7 +60,7 @@ public class ResultsStateProcessor implements StateProcessor {
         var totalAmount = 0.0D;
 
         template = "- Холодная вода: *%.2f*₽%n"
-            + "%.3f - %.3f = %.3fм³.%n"
+            + "%.3f - %.3f = %.3fм³%n"
             + "Тариф: %.2f₽/м³ с %s%n%n";
         current = calculation.getCurrentColdWaterMeters() / 1000.0D;
         last = calculation.getLastColdWaterMeters() / 1000.0D;
