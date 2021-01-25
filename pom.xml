@@ -23,7 +23,7 @@
     <jsoup.version>1.13.1</jsoup.version>
     <telegrambots.version>4.9.1</telegrambots.version>
     <logback.version>1.2.3</logback.version>
-    <assertj.version>3.18.0</assertj.version>
+    <assertj.version>3.19.0</assertj.version>
     <postgresql.version>42.2.18</postgresql.version>
     <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
