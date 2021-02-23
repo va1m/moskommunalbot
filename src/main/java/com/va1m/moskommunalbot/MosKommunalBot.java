@@ -7,6 +7,7 @@ import com.va1m.moskommunalbot.interaction.InteractionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -39,31 +40,33 @@ public class MosKommunalBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
 
         // We check if the update has a message and the message has text
-        if (!update.hasMessage() || !update.getMessage().hasText()) {
+        final var inputMessage = update.getMessage();
+        if (!update.hasMessage() || !inputMessage.hasText()) {
             return;
         }
 
-        final var user = ofNullable(update.getMessage().getFrom())
+        final var user = ofNullable(inputMessage.getFrom())
             .map(User::getUserName)
             .orElse("anonymous");
 
-        final var chatId = update.getMessage().getChatId();
-        final var input = update.getMessage().getText();
+        final var chatId = inputMessage.getChatId();
+        final var input = inputMessage.getText();
 
         final var msg = interactionService.processState(chatId, input);
 
         LOGGER.trace("{} says: '{}', query: '{}'", user, input, msg.getText());
 
-        SendMessage message = new SendMessage()
-            .setChatId(chatId)
-            .enableMarkdown(true)
-            .disableWebPagePreview()
-            .setText(msg.getText())
-            .setReplyMarkup(buildButtons(msg.getButtonTexts()));
+        final var outputMessage = SendMessage.builder()
+            .chatId(chatId.toString())
+            .parseMode(ParseMode.MARKDOWN)
+            .disableWebPagePreview(true)
+            .text(msg.getText())
+            .replyMarkup(buildButtons(msg.getButtonTexts()))
+            .build();
 
         try {
             // Call method to send the message
-            execute(message);
+            execute(outputMessage);
         } catch (TelegramApiException e) {
             LOGGER.error("Couldn't ask user {}", user, e);
         }
@@ -71,8 +74,10 @@ public class MosKommunalBot extends TelegramLongPollingBot {
 
     private static ReplyKeyboard buildButtons(String[] texts) {
         if (texts == null || texts.length == 0) {
-            // Hide buttons from a previous step if for current step buttons are not needed
-            return new ReplyKeyboardRemove();
+            // Hide buttons from a previous step if buttons for current step are not needed
+            return ReplyKeyboardRemove.builder()
+                .removeKeyboard(true)
+                .build();
         }
 
         final var row = Stream.of(texts)
@@ -80,11 +85,14 @@ public class MosKommunalBot extends TelegramLongPollingBot {
             .collect(KeyboardRow::new, KeyboardRow::add, KeyboardRow::addAll);
 
         // Create a keyboard with buttons
-        return new ReplyKeyboardMarkup()
-            .setSelective(true)
-            .setResizeKeyboard(true)
-            .setOneTimeKeyboard(true)
-            .setKeyboard(List.of(row));
+        return ReplyKeyboardMarkup.builder()
+            .selective(true)
+            .resizeKeyboard(true)
+            .selective(true)
+            .resizeKeyboard(true)
+            .oneTimeKeyboard(true)
+            .keyboard(List.of(row))
+            .build();
     }
 
     @Override
