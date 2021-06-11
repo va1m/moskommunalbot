@@ -24,7 +24,7 @@
     <telegrambots.version>5.0.1.1</telegrambots.version>
     <logback.version>1.2.3</logback.version>
     <assertj.version>3.19.0</assertj.version>
-    <postgresql.version>42.2.19.jre7</postgresql.version>
+    <postgresql.version>42.2.21</postgresql.version>
     <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
 
