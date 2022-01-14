@@ -4,7 +4,7 @@
 
   <ignoreVersions>
     <!-- Contains version names that should not be used in pom.xml -->
-    <ignoreVersion type="regex">.*[-_\.](jboss|jenkins|redhat|patch|alpha)[-_.]?[0-9]*</ignoreVersion>
+    <ignoreVersion type="regex">.*[-_\.](jboss|jenkins|redhat|patch|alpha|beta|RC)[-_.]?[0-9]*</ignoreVersion>
     <ignoreVersion type="regex">.*\.M\d+</ignoreVersion>
   </ignoreVersions>
 

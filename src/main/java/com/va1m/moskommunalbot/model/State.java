@@ -1,4 +1,4 @@
-package com.va1m.moskommunalbot.interaction;
+package com.va1m.moskommunalbot.model;
 
 import java.util.stream.Stream;
 

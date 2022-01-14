@@ -3,12 +3,12 @@ package com.va1m.moskommunalbot.interaction.stateprocessors;
 import com.google.inject.Inject;
 import com.va1m.moskommunalbot.model.InteractionMessage;
 import com.va1m.moskommunalbot.model.Calculation;
-import com.va1m.moskommunalbot.interaction.State;
+import com.va1m.moskommunalbot.model.State;
 import com.va1m.moskommunalbot.interaction.TimeService;
 import com.va1m.moskommunalbot.priceproviders.ColdWaterPricesProvider;
 import com.va1m.moskommunalbot.priceproviders.ElectricityPricesProvider;
 import com.va1m.moskommunalbot.priceproviders.HotWaterPricesProvider;
-import com.va1m.moskommunalbot.priceproviders.PriceEntry;
+import com.va1m.moskommunalbot.model.Price;
 import com.va1m.moskommunalbot.priceproviders.WaterDisposingPricesProvider;
 import lombok.RequiredArgsConstructor;
 
@@ -20,11 +20,11 @@ public class ResultsStateProcessor implements StateProcessor {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    final ColdWaterPricesProvider coldWater;
-    final HotWaterPricesProvider hotWater;
-    final WaterDisposingPricesProvider waterDisposing;
-    final ElectricityPricesProvider electricity;
-    final TimeService timeService;
+    private final ColdWaterPricesProvider coldWater;
+    private final HotWaterPricesProvider hotWater;
+    private final WaterDisposingPricesProvider waterDisposing;
+    private final ElectricityPricesProvider electricity;
+    private final TimeService timeService;
 
     @RequiredArgsConstructor(staticName = "of")
     private static class ExpenseEntry {
@@ -55,7 +55,6 @@ public class ResultsStateProcessor implements StateProcessor {
         String template;
         double current;
         double last;
-        double consumed;
 
         var totalAmount = 0.0D;
 
@@ -112,18 +111,18 @@ public class ResultsStateProcessor implements StateProcessor {
         return InteractionMessage.of(text);
     }
 
-    private ExpenseEntry getExpenseEntry(PriceEntry[] priceEntries, double a, double b, double consumed, String template) {
+    private ExpenseEntry getExpenseEntry(Price[] prices, double a, double b, double consumed, String template) {
         final var today = timeService.getToday();
 
-        return Stream.of(priceEntries)
+        return Stream.of(prices)
             .filter(price -> today.compareTo(price.getSince()) >= 0)
             .filter(price -> today.compareTo(price.getTill()) <= 0)
             .findFirst()
-            .map(priceEntry -> {
-                final var dblPrice = ((double) priceEntry.getPrice()) / 100.0D;
+            .map(price -> {
+                final var dblPrice = ((double) price.getValue()) / 100.0D;
                 final var amount = consumed * dblPrice;
                 final var formattedText = String.format(template,
-                    amount, a, b, consumed, dblPrice, priceEntry.getSince().format(FORMATTER));
+                    amount, a, b, consumed, dblPrice, price.getSince().format(FORMATTER));
                 return ExpenseEntry.of(amount, formattedText);
             })
             .orElseThrow();

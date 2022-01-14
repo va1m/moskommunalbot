@@ -2,7 +2,7 @@ package com.va1m.moskommunalbot.interaction.stateprocessors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.va1m.moskommunalbot.interaction.State;
+import com.va1m.moskommunalbot.model.State;
 import org.junit.jupiter.api.Test;
 
 /** Tests {@link StartStateProcessor} */

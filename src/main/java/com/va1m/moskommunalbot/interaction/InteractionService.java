@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.va1m.moskommunalbot.model.Calculation;
 import com.va1m.moskommunalbot.model.InteractionMessage;
 import com.va1m.moskommunalbot.interaction.stateprocessors.StateProcessor;
+import com.va1m.moskommunalbot.model.State;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +33,6 @@ public class InteractionService {
     private final Map<State, StateProcessor> stateProcessors;
     private final CalculationDao calculationDao;
 
-    /** Constructor */
     @Inject
     public InteractionService(CalculationDao calculationDao, Set<StateProcessor> stateProcessors) {
         this.calculationDao = calculationDao;
