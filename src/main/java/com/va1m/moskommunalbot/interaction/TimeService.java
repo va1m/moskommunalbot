@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 /**
  * Just returns current day.
- * Clients uses this service can mock current day in their tests with any other static date.
+ * Clients using this service can mock current day in their tests with any other static date.
  */
 public class TimeService {
 

@@ -2,7 +2,7 @@ package com.va1m.moskommunalbot.interaction.stateprocessors;
 
 import com.va1m.moskommunalbot.model.InteractionMessage;
 import com.va1m.moskommunalbot.model.Calculation;
-import com.va1m.moskommunalbot.interaction.State;
+import com.va1m.moskommunalbot.model.State;
 
 /** Prepare output message text for {@link State#LAST_COLD_WATER_METERS} state and then handles user input data */
 public class LastColdWaterMetersStateProcessor implements StateProcessor {

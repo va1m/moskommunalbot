@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.va1m.moskommunalbot</groupId>
@@ -16,19 +16,70 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
 
-    <lombok.version>1.18.18</lombok.version>
-    <guice.version>4.2.2</guice.version>
-    <junit-jupiter.version>5.8.0-M1</junit-jupiter.version>
-    <mockito.version>3.8.0</mockito.version>
+    <lombok.version>1.18.22</lombok.version>
+    <guice.version>5.0.1</guice.version>
+    <junit-jupiter.version>5.8.2</junit-jupiter.version>
+    <mockito.version>4.2.0</mockito.version>
     <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
-    <telegrambots.version>5.0.1.1</telegrambots.version>
-    <logback.version>1.2.3</logback.version>
-    <assertj.version>3.19.0</assertj.version>
-    <postgresql.version>42.2.19.jre7</postgresql.version>
+    <telegrambots.version>5.6.0</telegrambots.version>
+    <logback.version>1.2.10</logback.version>
+    <assertj.version>3.22.0</assertj.version>
+    <postgresql.version>42.3.1</postgresql.version>
+    <jackson.version>2.13.1</jackson.version>
+    <activation.version>2.0.1</activation.version>
+    <guava.version>31.0.1-jre</guava.version>
+    <slf4j.version>1.7.33</slf4j.version>
+    <checker.version>3.21.1</checker.version>
     <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
 
   </properties>
+
+  <dependencyManagement>
+    <!-- Fixes version conflicts -->
+    <dependencies>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.module</groupId>
+        <artifactId>jackson-module-jaxb-annotations</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.activation</groupId>
+        <artifactId>jakarta.activation-api</artifactId>
+        <version>${activation.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.checkerframework</groupId>
+        <artifactId>checker-qual</artifactId>
+        <version>${checker.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
 
@@ -46,13 +97,6 @@
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
       <version>${guice.version}</version>
-      <exclusions>
-        <exclusion>
-          <!-- telegrambots has newest version -->
-          <groupId>com.google.guava</groupId>
-          <artifactId>guava</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <dependency>
@@ -72,13 +116,6 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>${logback.version}</version>
-      <exclusions>
-        <exclusion>
-          <!-- telegrambots has newest version -->
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <dependency>

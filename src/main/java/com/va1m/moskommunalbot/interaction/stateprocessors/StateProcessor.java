@@ -3,7 +3,7 @@ package com.va1m.moskommunalbot.interaction.stateprocessors;
 import com.va1m.moskommunalbot.model.InteractionMessage;
 import com.va1m.moskommunalbot.model.Calculation;
 import com.va1m.moskommunalbot.interaction.InvalidInputException;
-import com.va1m.moskommunalbot.interaction.State;
+import com.va1m.moskommunalbot.model.State;
 
 import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;

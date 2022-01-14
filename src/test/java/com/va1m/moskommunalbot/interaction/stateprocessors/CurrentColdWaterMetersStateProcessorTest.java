@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import com.va1m.moskommunalbot.model.Calculation;
 import com.va1m.moskommunalbot.interaction.InvalidInputException;
-import com.va1m.moskommunalbot.interaction.State;
+import com.va1m.moskommunalbot.model.State;
 import com.va1m.moskommunalbot.model.InteractionMessage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

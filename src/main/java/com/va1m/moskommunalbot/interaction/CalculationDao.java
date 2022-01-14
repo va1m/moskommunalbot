@@ -5,6 +5,7 @@ import static java.util.Optional.ofNullable;
 import com.google.inject.Inject;
 import com.va1m.moskommunalbot.Settings;
 import com.va1m.moskommunalbot.model.Calculation;
+import com.va1m.moskommunalbot.model.State;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;

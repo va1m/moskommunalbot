@@ -1,6 +1,5 @@
 package com.va1m.moskommunalbot.model;
 
-import com.va1m.moskommunalbot.interaction.State;
 import lombok.Getter;
 import lombok.Setter;
 
