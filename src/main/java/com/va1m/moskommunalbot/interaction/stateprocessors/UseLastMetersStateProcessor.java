@@ -2,7 +2,7 @@ package com.va1m.moskommunalbot.interaction.stateprocessors;
 
 import com.va1m.moskommunalbot.model.InteractionMessage;
 import com.va1m.moskommunalbot.model.Calculation;
-import com.va1m.moskommunalbot.interaction.State;
+import com.va1m.moskommunalbot.model.State;
 
 /** Prepare output message text for {@link State#USE_LAST_METERS} */
 public class UseLastMetersStateProcessor implements StateProcessor {

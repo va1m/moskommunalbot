@@ -3,14 +3,14 @@ package com.va1m.moskommunalbot.interaction.stateprocessors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.va1m.moskommunalbot.interaction.State;
+import com.va1m.moskommunalbot.model.State;
 import com.va1m.moskommunalbot.interaction.TimeService;
 import com.va1m.moskommunalbot.model.Calculation;
 import com.va1m.moskommunalbot.model.InteractionMessage;
 import com.va1m.moskommunalbot.priceproviders.ColdWaterPricesProvider;
 import com.va1m.moskommunalbot.priceproviders.ElectricityPricesProvider;
 import com.va1m.moskommunalbot.priceproviders.HotWaterPricesProvider;
-import com.va1m.moskommunalbot.priceproviders.PriceEntry;
+import com.va1m.moskommunalbot.model.Price;
 import com.va1m.moskommunalbot.priceproviders.WaterDisposingPricesProvider;
 import com.va1m.testools.Json;
 import org.junit.jupiter.api.Test;
@@ -55,11 +55,11 @@ class ResultsStateProcessorTest {
             "com/va1m/moskommunalbot/interaction/stateprocessors/interaction-context.json",
             Calculation.class);
 
-        final var priceEntry = PriceEntry.of(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 31), 123);
-        when(coldWater.provide()).thenReturn(new PriceEntry[] { priceEntry });
-        when(hotWater.provide()).thenReturn(new PriceEntry[] { priceEntry });
-        when(waterDisposing.provide()).thenReturn(new PriceEntry[] { priceEntry });
-        when(electricity.provide()).thenReturn(new PriceEntry[] { priceEntry });
+        final var price = Price.of(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 12, 31), 123);
+        when(coldWater.provide()).thenReturn(new Price[] { price });
+        when(hotWater.provide()).thenReturn(new Price[] { price });
+        when(waterDisposing.provide()).thenReturn(new Price[] { price });
+        when(electricity.provide()).thenReturn(new Price[] { price });
         when(timeService.getToday()).thenReturn(LocalDate.of(2020, 7, 1));
 
         final var output = stateProcessor.buildMessageForUser(interactionContext);

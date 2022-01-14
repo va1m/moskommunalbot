@@ -12,6 +12,8 @@ import static org.mockito.Mockito.when;
 import com.va1m.moskommunalbot.model.Calculation;
 import com.va1m.moskommunalbot.model.InteractionMessage;
 import com.va1m.moskommunalbot.interaction.stateprocessors.StateProcessor;
+import com.va1m.moskommunalbot.model.State;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
