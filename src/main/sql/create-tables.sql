@@ -1,6 +1,6 @@
 create table calculation
 (
-    chat_id                    integer not null
+    chat_id                    long not null
         constraint calculation_pk
             primary key,
     state                      text,
