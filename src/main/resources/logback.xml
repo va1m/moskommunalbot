@@ -8,7 +8,11 @@
   </appender>
 
   <property name="LOG_FILE" value="moskommunalbot"/>
-  <property name="LOG_DIR" value="./logs"/>
+  <if condition='isDefined("LOG_DIR")'>
+    <else>
+      <property name="LOG_DIR" value="./logs"/>
+    </else>
+  </if>
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${LOG_DIR}/${LOG_FILE}.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
