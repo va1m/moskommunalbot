@@ -1,14 +1,13 @@
 package com.va1m.moskommunalbot.interaction.stateprocessors;
 
-import com.google.inject.Inject;
-import com.va1m.moskommunalbot.model.InteractionMessage;
-import com.va1m.moskommunalbot.model.Calculation;
-import com.va1m.moskommunalbot.model.State;
 import com.va1m.moskommunalbot.interaction.TimeService;
+import com.va1m.moskommunalbot.model.Calculation;
+import com.va1m.moskommunalbot.model.InteractionMessage;
+import com.va1m.moskommunalbot.model.Price;
+import com.va1m.moskommunalbot.model.State;
 import com.va1m.moskommunalbot.priceproviders.ColdWaterPricesProvider;
 import com.va1m.moskommunalbot.priceproviders.ElectricityPricesProvider;
 import com.va1m.moskommunalbot.priceproviders.HotWaterPricesProvider;
-import com.va1m.moskommunalbot.model.Price;
 import com.va1m.moskommunalbot.priceproviders.WaterDisposingPricesProvider;
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +32,6 @@ public class ResultsStateProcessor implements StateProcessor {
     }
 
     /** Constructor */
-    @Inject
     public ResultsStateProcessor(ColdWaterPricesProvider coldWater, HotWaterPricesProvider hotWater,
         WaterDisposingPricesProvider waterDisposing, ElectricityPricesProvider electricity, TimeService timeService) {
 

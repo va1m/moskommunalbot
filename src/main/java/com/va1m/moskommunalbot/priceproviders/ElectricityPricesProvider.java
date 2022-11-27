@@ -1,8 +1,11 @@
 package com.va1m.moskommunalbot.priceproviders;
 
 import com.va1m.moskommunalbot.model.Price;
+import dagger.Reusable;
 
 import java.time.LocalDate;
+
+import javax.inject.Inject;
 
 /**
  * Provides prices for electricity with durations during which the prices are valid
@@ -10,7 +13,13 @@ import java.time.LocalDate;
  * https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/kvartiry-i-doma-s-elektricheskimi-plitami.php
  * "Однотарифный учёт с применением одноставочного тарифа"
  */
+@Reusable
 public class ElectricityPricesProvider {
+
+    @Inject
+    public ElectricityPricesProvider() {
+        // necessary to be injectable for Dagger DI
+    }
 
     /** Provides prices with the durations they are being applying */
     public Price[] provide() {

@@ -1,15 +1,24 @@
 package com.va1m.moskommunalbot.priceproviders;
 
 import com.va1m.moskommunalbot.model.Price;
+import dagger.Reusable;
 
 import java.time.LocalDate;
+
+import javax.inject.Inject;
 
 /**
  * Provides prices for cold water with durations during which the prices are valid
  *
  * https://online.moek.ru/clients/tarify-i-raschety/tarify
  */
+@Reusable
 public class HotWaterPricesProvider {
+
+    @Inject
+    public HotWaterPricesProvider() {
+        // necessary to be injectable for Dagger DI
+    }
 
     /** Provides prices with the durations they are being applying */
     public Price[] provide() {

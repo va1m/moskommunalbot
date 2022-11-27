@@ -2,7 +2,6 @@ package com.va1m.moskommunalbot;
 
 import static java.util.Optional.ofNullable;
 
-import com.google.inject.Inject;
 import com.va1m.moskommunalbot.interaction.InteractionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.List;
 import java.util.stream.Stream;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /** Contains the bot's logic */
+@Singleton
 public class MosKommunalBot extends TelegramLongPollingBot {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MosKommunalBot.class);

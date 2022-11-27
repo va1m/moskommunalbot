@@ -1,7 +1,5 @@
 package com.va1m.moskommunalbot;
 
-import com.google.inject.Guice;
-import com.va1m.moskommunalbot.interaction.stateprocessors.StateProcessorInjectionConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -15,11 +13,10 @@ public class Main {
     /** Main method */
     public static void main(String[] args) {
         try {
-            final var injector = Guice.createInjector(new StateProcessorInjectionConfig());
-            final var mosKommunalBot = injector.getInstance(MosKommunalBot.class);
+            BotFactory botFactory = DaggerBotFactory.create();
 
             final var telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-            telegramBotsApi.registerBot(mosKommunalBot);
+            telegramBotsApi.registerBot(botFactory.bot());
 
             LOGGER.info("MosKommunalBot is started");
         } catch (Exception e) {
