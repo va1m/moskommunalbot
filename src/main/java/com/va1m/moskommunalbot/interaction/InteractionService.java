@@ -1,10 +1,10 @@
 package com.va1m.moskommunalbot.interaction;
 
-import com.google.inject.Inject;
 import com.va1m.moskommunalbot.interaction.stateprocessors.StateProcessor;
 import com.va1m.moskommunalbot.model.Calculation;
 import com.va1m.moskommunalbot.model.InteractionMessage;
 import com.va1m.moskommunalbot.model.State;
+import dagger.Reusable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +13,10 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 /** Manages states to process response messages */
+@Reusable
 public class InteractionService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InteractionService.class);

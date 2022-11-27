@@ -2,10 +2,10 @@ package com.va1m.moskommunalbot.interaction;
 
 import static java.util.Optional.ofNullable;
 
-import com.google.inject.Inject;
 import com.va1m.moskommunalbot.DataSource;
 import com.va1m.moskommunalbot.model.Calculation;
 import com.va1m.moskommunalbot.model.State;
+import dagger.Reusable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +13,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
 /** Provides methods to store and read {@link Calculation} from database */
+@Reusable
 public class CalculationDao {
 
     private final DataSource dataSource;

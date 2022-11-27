@@ -1,8 +1,11 @@
 package com.va1m.moskommunalbot.priceproviders;
 
 import com.va1m.moskommunalbot.model.Price;
+import dagger.Reusable;
 
 import java.time.LocalDate;
+
+import javax.inject.Inject;
 
 /**
  * Provides prices for cold water with durations during which the prices are valid
@@ -13,7 +16,13 @@ import java.time.LocalDate;
  * осуществляемые акционерным обществом "Мосводоканал" на территории города Москвы
  * (за исключением Троицкого и Новомосковского административных округов)"
  */
+@Reusable
 public class ColdWaterPricesProvider {
+
+    @Inject
+    public ColdWaterPricesProvider() {
+        // necessary to be injectable for Dagger DI
+    }
 
     /** Provides prices with the durations they are being applying */
     public Price[] provide() {

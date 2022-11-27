@@ -1,9 +1,19 @@
 package com.va1m.moskommunalbot;
 
+import dagger.Reusable;
+
 import java.net.URI;
 
+import javax.inject.Inject;
+
 /** Provides the application settings */
+@Reusable
 public class Settings {
+
+    @Inject
+    public Settings() {
+        // necessary to be injectable for Dagger DI
+    }
 
     /**
      * Returns the bot's token read from system property.
