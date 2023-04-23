@@ -9,8 +9,8 @@ import javax.inject.Inject;
 
 /**
  * Provides prices for cold water with durations during which the prices are valid
- *
- * http://www.mosvodokanal.ru/forabonents/tariffs/
+ * <p>
+ * <a href="http://www.mosvodokanal.ru/forabonents/tariffs/">tariffs online</a>
  * "ТАРИФЫ
  * на питьевую воду (питьевое водоснабжение) и водоотведение,
  * осуществляемые акционерным обществом "Мосводоканал" на территории города Москвы
@@ -29,7 +29,8 @@ public class ColdWaterPricesProvider {
         return new Price[]{
             Price.of(LocalDate.of(2020, 7, 1), LocalDate.of(2021, 7, 1).minusDays(1), 4230),
             Price.of(LocalDate.of(2021, 7, 1), LocalDate.of(2022, 7, 1).minusDays(1), 4357),
-            Price.of(LocalDate.of(2022, 7, 1), LocalDate.of(2023, 7, 1).minusDays(1), 4588)
+            Price.of(LocalDate.of(2022, 7, 1), LocalDate.of(2023, 7, 1).minusDays(1), 4588),
+            Price.of(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31), 5093),
         };
     }
 }

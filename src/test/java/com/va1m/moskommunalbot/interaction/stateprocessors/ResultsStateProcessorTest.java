@@ -87,7 +87,7 @@ class ResultsStateProcessorTest {
             + "Цены взяты из следующих источников:\n"
             + "- [МосВодоКанал](http://www.mosvodokanal.ru/forabonents/tariffs/)\n"
             + "- [МОЭК](https://online.moek.ru/clients/tarify-i-raschety/tarify)\n"
-            + "- [МосЭнергоСбыт](https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/kvartiry-i-doma-s-elektricheskimi-plitami.php)\n"
+            + "- [МосЭнергоСбыт](https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/polnaya-versiya-tarifov.php)\n"
             + "\n"
             + "Для начала нового расчета наберите /new.";
 

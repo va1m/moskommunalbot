@@ -42,7 +42,7 @@ Electricity:
 
 * [Cold water and disposing](http://www.mosvodokanal.ru/forabonents/tariffs/)
 * [Hot water](https://online.moek.ru/clients/tarify-i-raschety/tarify)
-* [Electricity](https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/kvartiry-i-doma-s-elektricheskimi-plitami.php)
+* [Electricity](https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/polnaya-versiya-tarifov.php)
 
 ## Where the bot lives?
 
