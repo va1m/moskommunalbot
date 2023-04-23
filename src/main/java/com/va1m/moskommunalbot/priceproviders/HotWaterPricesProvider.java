@@ -9,8 +9,8 @@ import javax.inject.Inject;
 
 /**
  * Provides prices for cold water with durations during which the prices are valid
- *
- * https://online.moek.ru/clients/tarify-i-raschety/tarify
+ * <p>
+ * @see <a href="https://online.moek.ru/clients/tarify-i-raschety/tarify">tariffs online</a>
  */
 @Reusable
 public class HotWaterPricesProvider {
@@ -26,8 +26,7 @@ public class HotWaterPricesProvider {
             Price.of(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 7, 1).minusDays(1), 19819),
             Price.of(LocalDate.of(2020, 7, 1), LocalDate.of(2021, 7, 1).minusDays(1), 20515),
             Price.of(LocalDate.of(2021, 7, 1), LocalDate.of(2022, 7, 1).minusDays(1), 20696),
-            Price.of(LocalDate.of(2022, 7, 1), LocalDate.of(2023, 7, 1).minusDays(1), 22285),
-            Price.of(LocalDate.of(2023, 7, 1), LocalDate.of(2024, 1, 1).minusDays(1), 22482)
+            Price.of(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31), 24316)
         };
     }
 }

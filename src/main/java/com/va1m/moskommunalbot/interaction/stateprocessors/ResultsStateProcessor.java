@@ -103,21 +103,22 @@ public class ResultsStateProcessor implements StateProcessor {
             + "Цены взяты из следующих источников:\n"
             + "- [МосВодоКанал](http://www.mosvodokanal.ru/forabonents/tariffs/)\n"
             + "- [МОЭК](https://online.moek.ru/clients/tarify-i-raschety/tarify)\n"
-            + "- [МосЭнергоСбыт](https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/kvartiry-i-doma-s-elektricheskimi-plitami.php)\n"
+            + "- [МосЭнергоСбыт](https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/polnaya-versiya-tarifov.php)\n"
             + "\n"
             + "Для начала нового расчета наберите /new.";
         return InteractionMessage.of(text);
     }
 
     private ExpenseEntry getExpenseEntry(Price[] prices, double a, double b, double consumed, String template) {
+
         final var today = timeService.getToday();
 
         return Stream.of(prices)
-            .filter(price -> today.compareTo(price.getSince()) >= 0)
-            .filter(price -> today.compareTo(price.getTill()) <= 0)
+            .filter(price -> !today.isBefore(price.getSince()))
+            .filter(price -> !today.isAfter(price.getTill()))
             .findFirst()
             .map(price -> {
-                final var dblPrice = ((double) price.getValue()) / 100.0D;
+                final var dblPrice = price.getValue() / 100.0D;
                 final var amount = consumed * dblPrice;
                 final var formattedText = String.format(template,
                     amount, a, b, consumed, dblPrice, price.getSince().format(FORMATTER));
