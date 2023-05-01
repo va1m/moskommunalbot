@@ -29,7 +29,7 @@ public class WaterDisposingPricesProvider {
         return new Price[]{
             Price.of(LocalDate.of(2020, 7, 1), LocalDate.of(2021, 7, 1).minusDays(1), 3090),
             Price.of(LocalDate.of(2021, 7, 1), LocalDate.of(2022, 7, 1).minusDays(1), 3202),
-            Price.of(LocalDate.of(2022, 7, 1), LocalDate.of(2023, 1, 1).minusDays(1), 3553),
+            Price.of(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 12, 31), 3553),
             Price.of(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31), 3997)
         };
     }
