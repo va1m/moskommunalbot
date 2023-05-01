@@ -29,8 +29,8 @@ public class ColdWaterPricesProvider {
         return new Price[]{
             Price.of(LocalDate.of(2020, 7, 1), LocalDate.of(2021, 7, 1).minusDays(1), 4230),
             Price.of(LocalDate.of(2021, 7, 1), LocalDate.of(2022, 7, 1).minusDays(1), 4357),
-            Price.of(LocalDate.of(2022, 7, 1), LocalDate.of(2023, 7, 1).minusDays(1), 4588),
-            Price.of(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31), 5093),
+            Price.of(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 12, 31), 4588),
+            Price.of(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31), 5093)
         };
     }
 }
