@@ -14,24 +14,24 @@
     <project.file.encoding>UTF-8</project.file.encoding>
     <java.version>17</java.version>
 
-    <lombok.version>1.18.24</lombok.version>
-    <dagger.version>2.44.2</dagger.version>
-    <junit-jupiter.version>5.9.1</junit-jupiter.version>
-    <mockito.version>4.9.0</mockito.version>
-    <versions-maven-plugin.version>2.13.0</versions-maven-plugin.version>
-    <telegrambots.version>6.3.0</telegrambots.version>
-    <logback.version>1.4.5</logback.version>
-    <janino.version>3.1.9</janino.version>
-    <assertj.version>3.23.1</assertj.version>
-    <sqlite.version>3.40.0.0</sqlite.version>
+    <lombok.version>1.18.30</lombok.version>
+    <dagger.version>2.48</dagger.version>
+    <junit-jupiter.version>5.10.0</junit-jupiter.version>
+    <mockito.version>5.2.0</mockito.version>
+    <telegrambots.version>6.8.0</telegrambots.version>
+    <logback.version>1.4.11</logback.version>
+    <janino.version>3.1.10</janino.version>
+    <assertj.version>3.24.2</assertj.version>
+    <sqlite.version>3.43.0.0</sqlite.version>
     <hikaricp.version>5.0.1</hikaricp.version>
-    <jackson.version>2.14.1</jackson.version>
+    <jackson.version>2.15.2</jackson.version>
     <activation.version>2.1.0</activation.version>
     <guava.version>31.1-jre</guava.version>
-    <slf4j.version>2.0.5</slf4j.version>
-    <byte-buddy.version>1.12.19</byte-buddy.version>
-    <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
-    <maven-assembly-plugin.version>3.4.2</maven-assembly-plugin.version>
+    <commons-codec.version>1.16.0</commons-codec.version>
+    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+    <maven-assembly-plugin.version>3.5.0</maven-assembly-plugin.version>
+    <versions-maven-plugin.version>2.16.0</versions-maven-plugin.version>
 
   </properties>
 
@@ -59,14 +59,10 @@
         <version>${jackson.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>${slf4j.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>net.bytebuddy</groupId>
-        <artifactId>byte-buddy</artifactId>
-        <version>${byte-buddy.version}</version>
+        <!-- Fixes a vulnerability in an old version used by telegrambots -->
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${commons-codec.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -94,6 +90,13 @@
       <groupId>org.telegram</groupId>
       <artifactId>telegrambots</artifactId>
       <version>${telegrambots.version}</version>
+      <exclusions>
+        <exclusion>
+          <!-- logback-classic has the newest version -->
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -108,6 +111,7 @@
       <version>${hikaricp.version}</version>
       <exclusions>
         <exclusion>
+          <!-- logback-classic has the newest version -->
           <groupId>org.slf4j</groupId>
           <artifactId>slf4j-api</artifactId>
         </exclusion>
@@ -158,6 +162,13 @@
       <artifactId>assertj-core</artifactId>
       <version>${assertj.version}</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <!-- mockito-core has newest vesrion -->
+          <groupId>net.bytebuddy</groupId>
+          <artifactId>byte-buddy</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
   </dependencies>
@@ -168,7 +179,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
           <annotationProcessorPaths>
             <path>
@@ -216,7 +227,7 @@
         <!--
         https://www.mojohaus.org/versions-maven-plugin/index.html
         Usage:
-          mvn versions:update-properties  // Updates all dependencies to their latest versions which use version numbers defined in a property
+          mvn versions:update-properties // Updates all dependencies to their latest versions which use version numbers defined in a property
         -->
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
