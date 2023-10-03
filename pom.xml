@@ -12,9 +12,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.file.encoding>UTF-8</project.file.encoding>
-    <java.version>11</java.version>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <java.version>17</java.version>
 
     <lombok.version>1.18.24</lombok.version>
     <guice.version>5.1.0</guice.version>

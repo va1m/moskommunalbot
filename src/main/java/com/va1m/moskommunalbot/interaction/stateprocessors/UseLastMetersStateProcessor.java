@@ -21,11 +21,13 @@ public class UseLastMetersStateProcessor implements StateProcessor {
             return null;
         }
 
-        final var template = "Привет! Начинаем новый расчёт за коммунальные услуги.\n"
-            + "Хотите использовать показания счётчиков из предыдущего расчёта?\n"
-            + "Холодная вода: *%.3f*\n"
-            + "Горячая вода: *%.3f*\n"
-            + "Электричество: *%.1f*.";
+        final var template = """
+            Привет! Начинаем новый расчёт за коммунальные услуги.
+            Хотите использовать показания счётчиков из предыдущего расчёта?
+            Холодная вода: *%.3f*
+            Горячая вода: *%.3f*
+            Электричество: *%.1f*.\
+            """;
 
         final var text = String.format(template,
             calculation.getCurrentColdWaterMeters() / 1000.0D,
