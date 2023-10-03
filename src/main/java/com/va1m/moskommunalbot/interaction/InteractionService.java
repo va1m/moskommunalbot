@@ -70,9 +70,11 @@ public class InteractionService {
             return InteractionMessage.of(iie.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);
-            return InteractionMessage.of("Ups...\n"
-                + "Something went wrong.\n"
-                + "See log.");
+            return InteractionMessage.of("""
+                Ups...
+                Something went wrong.
+                See log.
+                """);
         }
     }
 }

@@ -103,7 +103,7 @@ class InteractionServiceTest {
 
         final var reply = interactionService.processState(100L, "Hi");
 
-        final var expected = InteractionMessage.of("Ups...\nSomething went wrong.\nSee log.");
+        final var expected = InteractionMessage.of("Ups...\nSomething went wrong.\nSee log.\n");
 
         assertThat(reply)
             .usingRecursiveComparison()

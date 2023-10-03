@@ -5,7 +5,7 @@ A telegram bot calculating communal expenses for hot, cold
 
 ## Requirements
 
-* JDK11 - OpenJDK HotSpot, for example.
+* JDK17 - OpenJDK HotSpot, for example.
 * Postgres database - See `src/main/sql/create-tables.sql` script 
   to create mandatory tables.
   Put connection URL in `dburl` system property.
