@@ -29,7 +29,7 @@
     <guava.version>31.1-jre</guava.version>
     <commons-codec.version>1.16.0</commons-codec.version>
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-    <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+    <maven-surefire-plugin.version>3.2.1</maven-surefire-plugin.version>
     <maven-shade-plugin.version>3.5.1</maven-shade-plugin.version>
     <versions-maven-plugin.version>2.16.1</versions-maven-plugin.version>
 
