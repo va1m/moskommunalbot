@@ -23,7 +23,7 @@
     <janino.version>3.1.10</janino.version>
     <assertj.version>3.24.2</assertj.version>
     <sqlite.version>3.43.2.1</sqlite.version>
-    <hikaricp.version>5.0.1</hikaricp.version>
+    <hikaricp.version>5.1.0</hikaricp.version>
     <jackson.version>2.15.3</jackson.version>
     <activation.version>2.1.0</activation.version>
     <guava.version>31.1-jre</guava.version>
