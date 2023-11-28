@@ -19,7 +19,7 @@
     <junit-jupiter.version>5.10.0</junit-jupiter.version>
     <mockito.version>5.2.0</mockito.version>
     <telegrambots.version>6.8.0</telegrambots.version>
-    <logback.version>1.4.11</logback.version>
+    <logback.version>1.4.12</logback.version>
     <janino.version>3.1.10</janino.version>
     <assertj.version>3.24.2</assertj.version>
     <sqlite.version>3.43.2.1</sqlite.version>
