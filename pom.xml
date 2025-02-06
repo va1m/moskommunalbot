@@ -14,58 +14,26 @@
     <project.file.encoding>UTF-8</project.file.encoding>
     <java.version>17</java.version>
 
-    <lombok.version>1.18.30</lombok.version>
-    <dagger.version>2.48.1</dagger.version>
-    <junit-jupiter.version>5.10.0</junit-jupiter.version>
+    <lombok.version>1.18.36</lombok.version>
+    <dagger.version>2.55</dagger.version>
+    <junit-jupiter.version>5.11.4</junit-jupiter.version>
     <mockito.version>5.2.0</mockito.version>
-    <telegrambots.version>6.8.0</telegrambots.version>
-    <logback.version>1.4.11</logback.version>
-    <janino.version>3.1.10</janino.version>
-    <assertj.version>3.24.2</assertj.version>
-    <sqlite.version>3.43.2.1</sqlite.version>
-    <hikaricp.version>5.0.1</hikaricp.version>
-    <jackson.version>2.15.3</jackson.version>
+    <telegrambots.version>6.9.7.1</telegrambots.version>
+    <logback.version>1.5.16</logback.version>
+    <janino.version>3.1.12</janino.version>
+    <assertj.version>3.27.3</assertj.version>
+    <sqlite.version>3.48.0.0</sqlite.version>
+    <hikaricp.version>6.2.1</hikaricp.version>
+    <jackson.version>2.16.1</jackson.version>
     <activation.version>2.1.0</activation.version>
     <guava.version>31.1-jre</guava.version>
     <commons-codec.version>1.16.0</commons-codec.version>
-    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-    <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
-    <maven-shade-plugin.version>3.5.1</maven-shade-plugin.version>
-    <versions-maven-plugin.version>2.16.1</versions-maven-plugin.version>
+    <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
+    <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
+    <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 
   </properties>
-
-  <dependencyManagement>
-    <!-- Fixes version conflicts -->
-    <dependencies>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-annotations</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.module</groupId>
-        <artifactId>jackson-module-jaxb-annotations</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <!-- Fixes a vulnerability in an old version used by telegrambots -->
-        <groupId>commons-codec</groupId>
-        <artifactId>commons-codec</artifactId>
-        <version>${commons-codec.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
 
@@ -85,6 +53,7 @@
       <version>${dagger.version}</version>
       <exclusions>
         <exclusion>
+          <!-- Fixes "jakarta.inject-2.6.1.jar, javax.inject-1.jar define 6 overlapping classes:" warn -->
           <groupId>javax.inject</groupId>
           <artifactId>javax.inject</artifactId>
         </exclusion>
@@ -98,7 +67,7 @@
       <version>${telegrambots.version}</version>
       <exclusions>
         <exclusion>
-          <!-- logback-classic has the newest version -->
+          <!-- Conflicts with logback-classic -->
           <groupId>org.slf4j</groupId>
           <artifactId>slf4j-api</artifactId>
         </exclusion>
@@ -117,7 +86,7 @@
       <version>${hikaricp.version}</version>
       <exclusions>
         <exclusion>
-          <!-- logback-classic has the newest version -->
+          <!-- Conflicts with logback-classic -->
           <groupId>org.slf4j</groupId>
           <artifactId>slf4j-api</artifactId>
         </exclusion>
@@ -143,6 +112,7 @@
       <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-junit-jupiter</artifactId>
@@ -150,6 +120,7 @@
       <scope>test</scope>
       <exclusions>
         <exclusion>
+          <!-- Conflicts with junit-jupiter -->
           <groupId>org.junit.jupiter</groupId>
           <artifactId>junit-jupiter-api</artifactId>
         </exclusion>
@@ -168,13 +139,6 @@
       <artifactId>assertj-core</artifactId>
       <version>${assertj.version}</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <!-- mockito-core has newest vesrion -->
-          <groupId>net.bytebuddy</groupId>
-          <artifactId>byte-buddy</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
   </dependencies>
