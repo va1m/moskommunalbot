@@ -19,6 +19,14 @@ import javax.inject.Inject;
 @Reusable
 public class ColdWaterPricesProvider {
 
+    private static final Price[] PRICES = {
+        Price.of(LocalDate.of(2020, 7, 1), LocalDate.of(2021, 7, 1).minusDays(1), 4230),
+        Price.of(LocalDate.of(2021, 7, 1), LocalDate.of(2022, 7, 1).minusDays(1), 4357),
+        Price.of(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 12, 31), 4588),
+        Price.of(LocalDate.of(2023, 1, 1), LocalDate.of(2024, 6, 30), 5093),
+        Price.of(LocalDate.of(2024, 7, 1), LocalDate.of(2024, 12, 31), 5980)
+    };
+
     @Inject
     public ColdWaterPricesProvider() {
         // necessary to be injectable for Dagger DI
@@ -26,11 +34,6 @@ public class ColdWaterPricesProvider {
 
     /** Provides prices with the durations they are being applying */
     public Price[] provide() {
-        return new Price[]{
-            Price.of(LocalDate.of(2020, 7, 1), LocalDate.of(2021, 7, 1).minusDays(1), 4230),
-            Price.of(LocalDate.of(2021, 7, 1), LocalDate.of(2022, 7, 1).minusDays(1), 4357),
-            Price.of(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 12, 31), 4588),
-            Price.of(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31), 5093)
-        };
+        return PRICES;
     }
 }
