@@ -28,7 +28,7 @@
     <activation.version>2.1.0</activation.version>
     <guava.version>31.1-jre</guava.version>
     <commons-codec.version>1.16.0</commons-codec.version>
-    <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+    <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
     <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
     <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
     <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
