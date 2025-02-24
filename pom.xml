@@ -16,7 +16,7 @@
 
     <lombok.version>1.18.36</lombok.version>
     <dagger.version>2.55</dagger.version>
-    <junit-jupiter.version>5.11.4</junit-jupiter.version>
+    <junit-jupiter.version>5.12.0</junit-jupiter.version>
     <mockito.version>5.2.0</mockito.version>
     <telegrambots.version>6.9.7.1</telegrambots.version>
     <logback.version>1.5.16</logback.version>
