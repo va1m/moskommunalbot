@@ -21,7 +21,8 @@ public class ElectricityPricesProvider {
         Price.of(LocalDate.of(2021, 7, 1), LocalDate.of(2022, 7, 1).minusDays(1), 515),
         Price.of(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 12, 31), 543),
         Price.of(LocalDate.of(2023, 1, 1), LocalDate.of(2024, 6, 30), 566),
-        Price.of(LocalDate.of(2024, 7, 1), LocalDate.of(2024, 12, 31), 615)
+        Price.of(LocalDate.of(2024, 7, 1), LocalDate.of(2024, 12, 31), 615),
+        Price.of(LocalDate.of(2025, 1, 1), LocalDate.of(2025, 12, 31), 699),
     };
 
     @Inject
