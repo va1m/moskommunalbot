@@ -24,7 +24,8 @@ public class ColdWaterPricesProvider {
         Price.of(LocalDate.of(2021, 7, 1), LocalDate.of(2022, 7, 1).minusDays(1), 4357),
         Price.of(LocalDate.of(2022, 7, 1), LocalDate.of(2022, 12, 31), 4588),
         Price.of(LocalDate.of(2023, 1, 1), LocalDate.of(2024, 6, 30), 5093),
-        Price.of(LocalDate.of(2024, 7, 1), LocalDate.of(2024, 12, 31), 5980)
+        Price.of(LocalDate.of(2024, 7, 1), LocalDate.of(2025, 6, 30), 5980),
+        Price.of(LocalDate.of(2025, 7, 1), LocalDate.of(2025, 12, 31), 6577),
     };
 
     @Inject
