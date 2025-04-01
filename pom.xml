@@ -14,7 +14,7 @@
     <project.file.encoding>UTF-8</project.file.encoding>
     <java.version>17</java.version>
 
-    <lombok.version>1.18.36</lombok.version>
+    <lombok.version>1.18.38</lombok.version>
     <dagger.version>2.55</dagger.version>
     <junit-jupiter.version>5.11.4</junit-jupiter.version>
     <mockito.version>5.2.0</mockito.version>
