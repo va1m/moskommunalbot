@@ -22,7 +22,7 @@
     <logback.version>1.5.16</logback.version>
     <janino.version>3.1.12</janino.version>
     <assertj.version>3.27.3</assertj.version>
-    <sqlite.version>3.48.0.0</sqlite.version>
+    <sqlite.version>3.49.1.0</sqlite.version>
     <hikaricp.version>6.2.1</hikaricp.version>
     <jackson.version>2.16.1</jackson.version>
     <activation.version>2.1.0</activation.version>
