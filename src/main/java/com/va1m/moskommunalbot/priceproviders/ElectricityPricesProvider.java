@@ -23,6 +23,7 @@ public class ElectricityPricesProvider {
         Price.of(LocalDate.of(2023, 1, 1), LocalDate.of(2024, 6, 30), 566),
         Price.of(LocalDate.of(2024, 7, 1), LocalDate.of(2024, 12, 31), 615),
         Price.of(LocalDate.of(2025, 1, 1), LocalDate.of(2025, 12, 31), 699),
+        Price.of(LocalDate.of(2026, 1, 1), LocalDate.of(2026, 9, 30), 728),
     };
 
     @Inject

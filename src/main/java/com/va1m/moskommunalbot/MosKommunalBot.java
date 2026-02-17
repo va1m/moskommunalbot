@@ -30,13 +30,12 @@ public class MosKommunalBot extends TelegramLongPollingBot {
     private static final Logger LOGGER = LoggerFactory.getLogger(MosKommunalBot.class);
 
     private final InteractionService interactionService;
-    private final Settings settings;
 
     /** Constructor */
     @Inject
     public MosKommunalBot(InteractionService interactionService, Settings settings) {
+        super(settings.getToken());
         this.interactionService = interactionService;
-        this.settings = settings;
     }
 
     @Override
@@ -101,10 +100,5 @@ public class MosKommunalBot extends TelegramLongPollingBot {
     @Override
     public String getBotUsername() {
         return "moskommunalbot";
-    }
-
-    @Override
-    public String getBotToken() {
-        return settings.getToken();
     }
 }

@@ -26,6 +26,8 @@ public class WaterDisposingPricesProvider {
         Price.of(LocalDate.of(2023, 1, 1), LocalDate.of(2024, 6, 30), 3997),
         Price.of(LocalDate.of(2024, 7, 1), LocalDate.of(2025, 6, 30), 4591),
         Price.of(LocalDate.of(2025, 7, 1), LocalDate.of(2025, 12, 31), 5162),
+        Price.of(LocalDate.of(2026, 1, 1), LocalDate.of(2026, 9, 30), 5248),
+        Price.of(LocalDate.of(2026, 10, 1), LocalDate.of(2026, 12, 31), 6024),
     };
 
     @Inject
