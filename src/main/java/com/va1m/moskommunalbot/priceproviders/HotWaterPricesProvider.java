@@ -21,10 +21,9 @@ public class HotWaterPricesProvider {
         Price.of(LocalDate.of(2021, 7, 1), LocalDate.of(2022, 6, 30), 20696),
         Price.of(LocalDate.of(2022, 7, 1), LocalDate.of(2024, 6, 30), 24316),
         Price.of(LocalDate.of(2024, 7, 1), LocalDate.of(2025, 6, 30), 27214),
-        Price.of(LocalDate.of(2025, 7, 1), LocalDate.of(2026, 6, 30), 27876),
-        Price.of(LocalDate.of(2026, 7, 1), LocalDate.of(2027, 6, 30), 28156),
-        Price.of(LocalDate.of(2027, 7, 1), LocalDate.of(2028, 6, 30), 29387),
-        Price.of(LocalDate.of(2028, 7, 1), LocalDate.of(2029, 6, 30), 29471)
+        Price.of(LocalDate.of(2025, 7, 1), LocalDate.of(2025, 12, 31), 27876),
+        Price.of(LocalDate.of(2026, 1, 1), LocalDate.of(2026, 9, 30), 31771),
+        Price.of(LocalDate.of(2026, 10, 1), LocalDate.of(2026, 12, 31), 37780)
     };
 
     @Inject
