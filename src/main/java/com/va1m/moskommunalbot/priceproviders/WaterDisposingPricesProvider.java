@@ -8,13 +8,14 @@ import java.time.LocalDate;
 import javax.inject.Inject;
 
 /**
- * Provides prices for disposing water with durations during which the prices are valid.
+ * Provides residential wastewater disposal prices for АО «Мосводоканал» consumers, including СВАО.
  * <p>
- * <a href="http://www.mosvodokanal.ru/forabonents/tariffs/">tariffs online</a>
- * "ТАРИФЫ
- * на питьевую воду (питьевое водоснабжение) и водоотведение,
- * осуществляемые акционерным обществом "Мосводоканал" на территории города Москвы
- * (за исключением Троицкого и Новомосковского административных округов)"
+ * Moscow Department of Economic Policy and Development order № ДПР-ТР-334/25 of 16.12.2025,
+ * effective 01.01.2026, amends order № ДПР-ТР-290/23 of 15.12.2023.
+ * Appendix № 4 (replacing appendix № 5), row 1, «Население (с учётом НДС)», PDF page 7.
+ * Prices include VAT and are stored in kopecks per m³.
+ *
+ * @see <a href="https://www.mos.ru/upload/documents/docs/4677/Prikazot16122025_DPR-TR-334_25-ghvb2.pdf">Official tariff order (PDF)</a>
  */
 @Reusable
 public class WaterDisposingPricesProvider {
@@ -28,6 +29,10 @@ public class WaterDisposingPricesProvider {
         Price.of(LocalDate.of(2025, 7, 1), LocalDate.of(2025, 12, 31), 5162),
         Price.of(LocalDate.of(2026, 1, 1), LocalDate.of(2026, 9, 30), 5248),
         Price.of(LocalDate.of(2026, 10, 1), LocalDate.of(2026, 12, 31), 6024),
+        Price.of(LocalDate.of(2027, 1, 1), LocalDate.of(2027, 6, 30), 6024),
+        Price.of(LocalDate.of(2027, 7, 1), LocalDate.of(2027, 12, 31), 6265),
+        Price.of(LocalDate.of(2028, 1, 1), LocalDate.of(2028, 6, 30), 6265),
+        Price.of(LocalDate.of(2028, 7, 1), LocalDate.of(2028, 12, 31), 6516),
     };
 
     @Inject

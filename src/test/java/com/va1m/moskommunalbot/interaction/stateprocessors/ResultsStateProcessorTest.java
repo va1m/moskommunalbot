@@ -15,6 +15,8 @@ import com.va1m.moskommunalbot.priceproviders.WaterDisposingPricesProvider;
 import com.va1m.testools.Json;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -79,20 +81,49 @@ class ResultsStateProcessorTest {
             + "Тариф: 1.23₽/м³ с 01.01.2020\n"
             + "\n"
             + "- Электричество: *1.23*₽\n"
-            + "10001.000 - 10000.000 = 1.0КВт\n"
-            + "Тариф: 1.23₽/КВт с 01.01.2020\n"
+            + "10001.000 - 10000.000 = 1.0кВт·ч\n"
+            + "Тариф: 1.23₽/кВт·ч с 01.01.2020\n"
             + "\n"
             + "ВСЕГО: *8.61*₽\n"
             + "\n"
             + "Цены взяты из следующих источников:\n"
-            + "- [МосВодоКанал](http://www.mosvodokanal.ru/forabonents/tariffs/)\n"
-            + "- [МОЭК](https://online.moek.ru/clients/tarify-i-raschety/tarify)\n"
-            + "- [МосЭнергоСбыт](https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/polnaya-versiya-tarifov.php)\n"
+            + "- [МосВодоКанал](https://www.mos.ru/upload/documents/docs/4677/Prikazot16122025_DPR-TR-334_25-ghvb2.pdf)\n"
+            + "- [МОЭК](https://www.mos.ru/upload/documents/docs/9077/Prikazot15122025_DPR-TR-316_25-ikuj8.pdf)\n"
+            + "- [МосЭнергоСбыт](https://www.mos.ru/upload/documents/docs/5117/Prikazot24122025_DPR-TR-407_25-ghvb1.pdf)\n"
             + "\n"
             + "Для начала нового расчета наберите /new.";
 
         assertThat(output)
             .usingRecursiveComparison()
             .isEqualTo(InteractionMessage.of(expected));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "2026-09-30, 01.01.2026, 66.87, 635.42, 157.44, 7.28, 867.01",
+        "2026-10-01, 01.10.2026, 73.79, 755.60, 180.72, 8.46, 1018.57",
+        "2026-10-16, 01.10.2026, 73.79, 755.60, 180.72, 8.46, 1018.57",
+        "2026-12-31, 01.10.2026, 73.79, 755.60, 180.72, 8.46, 1018.57"
+    })
+    void shouldCalculateWithApprovedTariffs(LocalDate date, String since, String coldWaterAmount,
+        String hotWaterAmount, String wastewaterAmount, String electricityAmount, String totalAmount) {
+
+        final var calculation = Json.deserialize(
+            "com/va1m/moskommunalbot/interaction/stateprocessors/interaction-context.json",
+            Calculation.class);
+        when(timeService.getToday()).thenReturn(date);
+        final var processor = new ResultsStateProcessor(new ColdWaterPricesProvider(), new HotWaterPricesProvider(),
+            new WaterDisposingPricesProvider(), new ElectricityPricesProvider(), timeService);
+
+        // The fixture consumes 1 m³ cold water, 2 m³ hot water, 3 m³ wastewater and 1 kWh.
+        final var text = processor.buildMessageForUser(calculation).getText();
+
+        assertThat(text).contains(
+            "- Холодная вода: *" + coldWaterAmount + "*₽",
+            "- Горячая вода: *" + hotWaterAmount + "*₽",
+            "- Водоотвод (канализация): *" + wastewaterAmount + "*₽",
+            "- Электричество: *" + electricityAmount + "*₽",
+            "Тариф: " + electricityAmount + "₽/кВт·ч с " + since,
+            "ВСЕГО: *" + totalAmount + "*₽");
     }
 }

@@ -82,8 +82,8 @@ public class ResultsStateProcessor implements StateProcessor {
         totalAmount += disposedWaterEntry.amount;
 
         template = "- Электричество: *%.2f*₽%n"
-            + "%.3f - %.3f = %.1fКВт%n"
-            + "Тариф: %.2f₽/КВт с %s%n%n";
+            + "%.3f - %.3f = %.1fкВт·ч%n"
+            + "Тариф: %.2f₽/кВт·ч с %s%n%n";
         current = calculation.getCurrentElectricityMeters() / 10.0D;
         last = calculation.getLastElectricityMeters() / 10.0D;
         final var consumedElectricity = current - last;
@@ -101,9 +101,9 @@ public class ResultsStateProcessor implements StateProcessor {
             + consumedElectricityEntry.formattedText
             + formattedTotalAmount
             + "Цены взяты из следующих источников:\n"
-            + "- [МосВодоКанал](http://www.mosvodokanal.ru/forabonents/tariffs/)\n"
-            + "- [МОЭК](https://online.moek.ru/clients/tarify-i-raschety/tarify)\n"
-            + "- [МосЭнергоСбыт](https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-msk/polnaya-versiya-tarifov.php)\n"
+            + "- [МосВодоКанал](https://www.mos.ru/upload/documents/docs/4677/Prikazot16122025_DPR-TR-334_25-ghvb2.pdf)\n"
+            + "- [МОЭК](https://www.mos.ru/upload/documents/docs/9077/Prikazot15122025_DPR-TR-316_25-ikuj8.pdf)\n"
+            + "- [МосЭнергоСбыт](https://www.mos.ru/upload/documents/docs/5117/Prikazot24122025_DPR-TR-407_25-ghvb1.pdf)\n"
             + "\n"
             + "Для начала нового расчета наберите /new.";
         return InteractionMessage.of(text);
