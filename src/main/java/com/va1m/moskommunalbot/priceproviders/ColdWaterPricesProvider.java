@@ -8,13 +8,14 @@ import java.time.LocalDate;
 import javax.inject.Inject;
 
 /**
- * Provides prices for cold water with durations during which the prices are valid
+ * Provides residential cold water prices for АО «Мосводоканал» consumers in Moscow, including СВАО.
  * <p>
- * <a href="http://www.mosvodokanal.ru/forabonents/tariffs/">tariffs online</a>
- * "ТАРИФЫ
- * на питьевую воду (питьевое водоснабжение) и водоотведение,
- * осуществляемые акционерным обществом "Мосводоканал" на территории города Москвы
- * (за исключением Троицкого и Новомосковского административных округов)"
+ * Moscow Department of Economic Policy and Development order № ДПР-ТР-334/25 of 16.12.2025,
+ * effective 01.01.2026, amends order № ДПР-ТР-290/23 of 15.12.2023.
+ * Appendix № 1 (replacing appendix № 2), row 1, «Население (с учётом НДС)», PDF page 3.
+ * Prices include VAT and are stored in kopecks per m³.
+ *
+ * @see <a href="https://www.mos.ru/upload/documents/docs/4677/Prikazot16122025_DPR-TR-334_25-ghvb2.pdf">Official tariff order (PDF)</a>
  */
 @Reusable
 public class ColdWaterPricesProvider {
@@ -27,7 +28,11 @@ public class ColdWaterPricesProvider {
         Price.of(LocalDate.of(2024, 7, 1), LocalDate.of(2025, 6, 30), 5980),
         Price.of(LocalDate.of(2025, 7, 1), LocalDate.of(2025, 12, 31), 6577),
         Price.of(LocalDate.of(2026, 1, 1), LocalDate.of(2026, 9, 30), 6687),
-        Price.of(LocalDate.of(2026, 10, 1), LocalDate.of(2026, 12, 31), 7379)
+        Price.of(LocalDate.of(2026, 10, 1), LocalDate.of(2026, 12, 31), 7379),
+        Price.of(LocalDate.of(2027, 1, 1), LocalDate.of(2027, 6, 30), 7379),
+        Price.of(LocalDate.of(2027, 7, 1), LocalDate.of(2027, 12, 31), 7674),
+        Price.of(LocalDate.of(2028, 1, 1), LocalDate.of(2028, 6, 30), 7674),
+        Price.of(LocalDate.of(2028, 7, 1), LocalDate.of(2028, 12, 31), 7981)
     };
 
     @Inject
